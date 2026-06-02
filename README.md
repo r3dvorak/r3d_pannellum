@@ -1,14 +1,10 @@
 # pkg_r3d_pannellum
 
-Joomla package for the R3D Pannellum viewer.
+Joomla package that installs the R3D Pannellum viewer stack in one step.
 
-## Contents
+It bundles the `mod_r3d_pannellum` module together with the
+`plg_system_r3d_adminui` system plugin so the panorama viewer and its
+admin UI integration stay in sync.
 
-- `mod_r3d_pannellum`
-- `plg_system_r3d_adminui`
-
-## Source Layout
-
-- `01_src/` contains the package source files.
-- `02_build/`, `04_dist/`, and `05_updates/` are build and release outputs.
-- `03_docs/logs/` stores local build logs.
+The package is built from the local `01_src/` source tree and released as a
+single installable ZIP for Joomla.
