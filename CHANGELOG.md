@@ -1,5 +1,10 @@
 # Changelog
 
+## [5.2.17] - 2026-06-02
+
+- Restored the package description constant to the `PKG_...` naming convention.
+- Aligned the package language files with Joomla's package language loading pattern.
+
 ## [5.2.16] - 2026-06-02
 
 - Moved the package language file into the package `language/` folders.

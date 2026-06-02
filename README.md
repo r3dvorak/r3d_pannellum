@@ -15,3 +15,4 @@ Release notes:
 - Language files are normalized for checker compatibility.
 - Module and plugin versions are bumped when their source files change.
 - Package language files now live under `01_src/language/<tag>/`.
+- Package description constants use the `PKG_...` naming convention.
