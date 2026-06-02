@@ -13,7 +13,7 @@
 	<description>R3D Pannellum Viewer (module) + Admin UI (system plugin)</description>
 	<url>https://r3d.de</url>
 
-    <scriptfile>pkg_script.php</scriptfile>
+    <scriptfile>script.pkg_r3d_pannellum.php</scriptfile>
     <blockChildUninstall>true</blockChildUninstall>
 
     <dependencies>
@@ -31,7 +31,7 @@
 			type="extension"
 			name="R3D Pannellum Updates"
 			priority="1">
-			https://www.r3d.de/joomlaextensions/updates/pkg_r3d_pannellum.xml
+			https://extensions.r3d.de/joomlaextensions/updates/pkg_r3d_pannellum.xml
 		</server>
 	</updateservers>
 </extension>
