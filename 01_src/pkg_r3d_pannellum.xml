@@ -2,7 +2,7 @@
 <extension type="package" method="upgrade">
 	<name>R3D Pannellum Viewer</name>
 	<packagename>r3d_pannellum</packagename>
-	<version>5.2.14</version>
+	<version>5.2.15</version>
 	<creationDate>2025-09-15</creationDate>
 	<author>Richard Dvorak, r3d.de</author>
 	<authorEmail>dev@r3d.de</authorEmail>

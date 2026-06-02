@@ -1,5 +1,10 @@
 # Changelog
 
+## [5.2.15] - 2026-06-02
+
+- Bumped the module and plugin versions after their source files changed.
+- Kept the package version in sync with the new embedded extension versions.
+
 ## [5.2.14] - 2026-06-02
 
 - Added the JED-expected package language file name.
