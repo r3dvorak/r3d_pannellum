@@ -4,9 +4,10 @@
 	<version>5.2.5</version>
 	<creationDate>2025-09-14</creationDate>
 	<author>Richard Dvorak, r3d.de</author>
+	<authorEmail>dev@r3d.de</authorEmail>
 	<authorUrl>https://r3d.de</authorUrl>
+	<copyright>Copyright (C) 2025 Richard Dvorak, https://r3d.de</copyright>
 	<license>GPL-3.0-or-later</license>
-	<title>R3D Admin UI</title>
 	<description>Admin UI helpers for R3D extensions.</description>
 	<files>
 		<filename plugin="r3d_adminui">r3d_adminui.php</filename>

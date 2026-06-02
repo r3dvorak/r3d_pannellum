@@ -4,9 +4,10 @@
 	<version>5.2.5</version>
 	<creationDate>2025-09-14</creationDate>
 	<author>Richard Dvorak, r3d.de</author>
+	<authorEmail>dev@r3d.de</authorEmail>
 	<authorUrl>https://r3d.de</authorUrl>
+	<copyright>Copyright (C) 2025 Richard Dvorak, https://r3d.de</copyright>
 	<license>GPL-3.0-or-later</license>
-	<title>R3D Pannellum Viewer</title>
 	<description>Embed 360° Panoramas with Pannellum (Basic / Intermediate / Advanced)</description>
 	<files>
 		<filename module="mod_r3d_pannellum">mod_r3d_pannellum.php</filename>
@@ -150,7 +151,7 @@
                     min="0" max="360" step="1" />
 			</fieldset>
 			<!-- INTERMEDIATE: only when intermediate or advanced -->
-			<fieldset name="intermediate" label="Intermediate Settings" showon="setup_level:intermediate,advanced">
+			<fieldset name="intermediate" label="Intermediate Settings">
 				<field name="hotspots"
                     type="subform"
                     formsource="modules/mod_r3d_pannellum/forms/hotspot.xml"
@@ -164,7 +165,7 @@
                 />
 			</fieldset>
 			<!-- ADVANCED: only when advanced -->
-			<fieldset name="advanced" label="Advanced Settings" showon="setup_level:advanced">
+			<fieldset name="advanced" label="Advanced Settings">
 				<field name="mock_advanced" type="spacer" label="Advanced Mockup" description="Multi-scene tour settings will come here." />
 			</fieldset>
 		</fields>

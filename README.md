@@ -8,3 +8,8 @@ admin UI integration stay in sync.
 
 The package is built from the local `01_src/` source tree and released as a
 single installable ZIP for Joomla.
+
+Release notes:
+
+- The package keeps a JED-friendly root language file name.
+- Language files are normalized for checker compatibility.

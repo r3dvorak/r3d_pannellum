@@ -1,29 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension type="package" method="upgrade">
-	<name>PKG_R3D_PANNELLUM</name>
+	<name>R3D Pannellum Viewer</name>
 	<packagename>r3d_pannellum</packagename>
-	<title>R3D Pannellum Viewer</title>
-	<version>5.2.10</version>
+	<version>5.2.14</version>
 	<creationDate>2025-09-15</creationDate>
 	<author>Richard Dvorak, r3d.de</author>
+	<authorEmail>dev@r3d.de</authorEmail>
 	<authorUrl>https://r3d.de</authorUrl>
+	<copyright>Copyright (C) 2025 Richard Dvorak, https://r3d.de</copyright>
 	<packager>Richard Dvorak, r3d.de</packager>
     <packagerurl>https://r3d.de</packagerurl>
 	<license>GPL-3.0-or-later</license>
-	<description>R3D Pannellum Viewer (module) + Admin UI (system plugin)</description>
+	<description>R3DPANNELLUMVIEWER_XML_DESCRIPTION</description>
 	<url>https://r3d.de</url>
 
     <scriptfile>script.pkg_r3d_pannellum.php</scriptfile>
     <blockChildUninstall>true</blockChildUninstall>
 
-    <dependencies>
-        <dependency type="php" version="8.2.0" />
-        <dependency type="joomla" version="4.0.0" />
-    </dependencies>
-
-    <files folder="packages">
-        <file type="module" id="mod_r3d_pannellum" client="site">mod_r3d_pannellum</file>
-        <file type="plugin" id="r3d_adminui" group="system">plg_system_r3d_adminui</file>
+    <files>
+        <file type="module" id="mod_r3d_pannellum" client="site">mod_r3d_pannellum.zip</file>
+        <file type="plugin" id="r3d_adminui" group="system">plg_system_r3d_adminui.zip</file>
     </files>
 
 	<updateservers>

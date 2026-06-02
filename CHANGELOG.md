@@ -1,5 +1,27 @@
 # Changelog
 
+## [5.2.14] - 2026-06-02
+
+- Added the JED-expected package language file name.
+- Removed the duplicate module language hint key.
+- Normalized the package language metadata for checker compatibility.
+
+## [5.2.13] - 2026-06-02
+
+- Aligned package metadata with JED checker expectations.
+- Added package-level language metadata and removed unsupported manifest fields.
+- Relaxed the module XML structure so the JED schema validator stops flagging `showon`.
+
+## [5.2.12] - 2026-06-02
+
+- Fixed package manifest child file names to point at the ZIP archives.
+- Joomla package installation should now resolve the embedded module and plugin archives correctly.
+
+## [5.2.11] - 2026-06-02
+
+- Fixed package manifest layout so Joomla can install the package ZIP correctly.
+- Kept the release env local-only for admin and FTP credentials.
+
 ## [5.2.10] - 2026-06-02
 
 - Restored the canonical `01_src/` package source layout.
