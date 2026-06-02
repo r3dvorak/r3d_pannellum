@@ -1,0 +1,34 @@
+{
+  "project": {
+    "name": "pkg_r3d_pannellum",
+    "slug": "r3d_pannellum",
+    "vendor": "r3d",
+    "description": "Joomla package for the R3D Pannellum viewer.",
+    "updateServerUrl": "https://extensions.r3d.de/joomlaextensions/updates/pkg_r3d_pannellum.xml",
+    "defaults": {
+      "version": "5.2.10",
+      "creationDate": "2025-09-15"
+    },
+    "author": {
+      "name": "Richard Dvorak",
+      "email": "dev@r3d.de",
+      "url": "https://www.r3d.de"
+    },
+    "license": "GPL-3.0-or-later"
+  },
+  "updates": {
+    "baseUrl": "https://extensions.r3d.de/joomlaextensions/updates"
+  },
+  "paths": {
+    "src": "01_src",
+    "build": "02_build",
+    "docs": "03_docs",
+    "dist": "04_dist",
+    "updates": "05_updates"
+  },
+  "standards": {
+    "targetJoomla": "4.x",
+    "targetPhp": "8.2+",
+    "versioning": "semver"
+  }
+}

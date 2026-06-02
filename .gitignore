@@ -1,18 +1,29 @@
-# Ignore everything by default.
-/*
+# Derived artifacts
+02_build/
+04_dist/
+03_docs/
+relaunch/
+05_updates/
+scripts/
 
-# Publish only the source tree.
-!/0_src/
-!/0_src/**
-
-# Keep the ignore rules themselves under version control.
-!.gitignore
-
-# Local junk.
-Thumbs.db
-ehthumbs.db
-.DS_Store
+# Temp
+*.tmp
 *.log
+.DS_Store
+
+# Local IDE files
+*.code-workspace
+
+# Local secrets / environment
+.env
+.ENV
+.env.local
+.ENV.local
+.env.*.local
+.ENV.*.local
+.venv/
 .vscode/
 .idea/
-*.code-workspace
+AGENTS.md
+session.json
+.codex/session.json
