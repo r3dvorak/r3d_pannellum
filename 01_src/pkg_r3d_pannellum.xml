@@ -2,7 +2,7 @@
 <extension type="package" method="upgrade">
 	<name>R3D Pannellum Viewer</name>
 	<packagename>r3d_pannellum</packagename>
-	<version>5.2.17</version>
+	<version>5.2.20</version>
 	<creationDate>2025-09-15</creationDate>
 	<author>Richard Dvorak, r3d.de</author>
 	<authorEmail>dev@r3d.de</authorEmail>
@@ -23,8 +23,8 @@
     </files>
 
     <languages>
-        <language tag="en-GB">language/en-GB/r3dpannellumviewer.sys.ini</language>
-        <language tag="de-DE">language/de-DE/r3dpannellumviewer.sys.ini</language>
+        <language tag="en-GB">language/en-GB/pkg_r3d_pannellum.sys.ini</language>
+        <language tag="de-DE">language/de-DE/pkg_r3d_pannellum.sys.ini</language>
     </languages>
 
 	<updateservers>

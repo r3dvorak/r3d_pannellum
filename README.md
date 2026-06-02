@@ -14,5 +14,7 @@ Release notes:
 - The package keeps a JED-friendly root language file name.
 - Language files are normalized for checker compatibility.
 - Module and plugin versions are bumped when their source files change.
-- Package language files now live under `01_src/language/<tag>/`.
 - Package description constants use the `PKG_...` naming convention.
+- Package language files now follow the sibling-package root naming convention.
+- The installer script explicitly loads the package language before showing the post-install note.
+- The ZIP also contains the exact `language/en-GB/...` and `language/de-DE/...` package language paths Joomla expects during install.

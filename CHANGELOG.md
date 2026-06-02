@@ -1,5 +1,21 @@
 # Changelog
 
+## [5.2.20] - 2026-06-02
+
+- Added the package language files under the exact paths Joomla looks for during install.
+- Kept the root package language copies for consistency with the existing source convention.
+
+## [5.2.19] - 2026-06-02
+
+- Matched the package language file layout to the sibling package convention.
+- Explicitly load the package language file in the installer script before enqueuing the post-install note.
+
+## [5.2.18] - 2026-06-02
+
+- Restored the package language files to the sibling-package root naming convention.
+- Added a post-install notice linking to the Modules manager.
+- Auto-enables the module alongside the system plugin after install/update.
+
 ## [5.2.17] - 2026-06-02
 
 - Restored the package description constant to the `PKG_...` naming convention.
