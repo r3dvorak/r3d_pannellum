@@ -14,3 +14,4 @@ Release notes:
 - The package keeps a JED-friendly root language file name.
 - Language files are normalized for checker compatibility.
 - Module and plugin versions are bumped when their source files change.
+- Package language files now live under `01_src/language/<tag>/`.

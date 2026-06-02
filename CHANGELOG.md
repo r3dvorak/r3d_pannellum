@@ -1,5 +1,11 @@
 # Changelog
 
+## [5.2.16] - 2026-06-02
+
+- Moved the package language file into the package `language/` folders.
+- Added both `en-GB` and `de-DE` package language files to the ZIP.
+- Updated the package build script to include the localized package language files.
+
 ## [5.2.15] - 2026-06-02
 
 - Bumped the module and plugin versions after their source files changed.
