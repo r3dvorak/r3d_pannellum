@@ -1,0 +1,18 @@
+# Ignore everything by default.
+/*
+
+# Publish only the source tree.
+!/0_src/
+!/0_src/**
+
+# Keep the ignore rules themselves under version control.
+!.gitignore
+
+# Local junk.
+Thumbs.db
+ehthumbs.db
+.DS_Store
+*.log
+.vscode/
+.idea/
+*.code-workspace
