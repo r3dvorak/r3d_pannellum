@@ -86,8 +86,10 @@ $projectJsonPath = Join-Path $projectRoot "project.json"
 $versionPath = Join-Path $projectRoot "VERSION"
 $packageXmlPath = Join-Path $projectRoot "01_src\pkg_r3d_pannellum.xml"
 $packageScriptPath = Join-Path $projectRoot "01_src\script.pkg_r3d_pannellum.php"
+$moduleXmlPath = Join-Path $projectRoot "01_src\packages\mod_r3d_pannellum\mod_r3d_pannellum.xml"
+$pluginXmlPath = Join-Path $projectRoot "01_src\packages\plg_system_r3d_adminui\r3d_adminui.xml"
 
-foreach ($path in @($projectJsonPath, $versionPath, $packageXmlPath, $packageScriptPath)) {
+foreach ($path in @($projectJsonPath, $versionPath, $packageXmlPath, $packageScriptPath, $moduleXmlPath, $pluginXmlPath)) {
     if (-not (Test-Path -LiteralPath $path -PathType Leaf)) {
         Fail "Missing file: $path"
     }
@@ -112,6 +114,8 @@ Update-TextFile -Path $projectJsonPath -Pattern '"version"\s*:\s*"[^"]+"' -Repla
 Set-Content -LiteralPath $versionPath -Value $newVersion
 Update-TextFile -Path $packageXmlPath -Pattern '<version>[^<]+</version>' -Replacement ("<version>{0}</version>" -f $newVersion)
 Update-TextFile -Path $packageScriptPath -Pattern '@version\s+\d+\.\d+\.\d+' -Replacement ("@version     {0}" -f $newVersion)
+Update-TextFile -Path $moduleXmlPath -Pattern '<version>[^<]+</version>' -Replacement ("<version>{0}</version>" -f $newVersion)
+Update-TextFile -Path $pluginXmlPath -Pattern '<version>[^<]+</version>' -Replacement ("<version>{0}</version>" -f $newVersion)
 
 Write-Host "Upticked package version: $currentVersion -> $newVersion"
 Write-Output $newVersion
