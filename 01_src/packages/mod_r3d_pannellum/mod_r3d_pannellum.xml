@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension type="module" client="site" method="upgrade">
 	<name>MOD_R3D_PANNELLUM</name>
-	<version>5.3.2</version>
+	<version>5.3.3</version>
 	<creationDate>2026-08-27</creationDate>
 	<author>Richard Dvorak, r3d.de</author>
 	<authorEmail>dev@r3d.de</authorEmail>
@@ -47,9 +47,9 @@
                     default="basic"
                     label="MOD_R3D_PAN_SETUP_LEVEL_LABEL"
                     description="MOD_R3D_PAN_SETUP_LEVEL_DESC">
-					<option value="basic">Basic</option>
-					<option value="intermediate">Intermediate</option>
-					<option value="advanced">Advanced</option>
+					<option value="basic">MOD_R3D_PAN_SETUP_BASIC</option>
+					<option value="intermediate">MOD_R3D_PAN_SETUP_INTERMEDIATE</option>
+					<option value="advanced">MOD_R3D_PAN_SETUP_ADVANCED</option>
 				</field>
 				<!-- Viewer container size -->
 				<field
@@ -79,8 +79,8 @@
                     label="MOD_R3D_PAN_AUTOLOAD_LABEL"
                     description="MOD_R3D_PAN_AUTOLOAD_DESC"
                     default="1">
-					<option value="1">Yes</option>
-					<option value="0">No</option>
+					<option value="1">MOD_R3D_PAN_OPTION_YES</option>
+					<option value="0">MOD_R3D_PAN_OPTION_NO</option>
 				</field>
 				<field name="sp_init" type="spacer" label="MOD_R3D_PAN_INIT_LABEL" description="MOD_R3D_PAN_INIT_DESC" />
 				<field name="yaw"   type="number" label="MOD_R3D_PAN_YAW_LABEL"   description="MOD_R3D_PAN_YAW_DESC"   hint="MOD_R3D_PAN_YAW_HINT"   filter="float" min="-180" max="180" step="1" />
@@ -102,30 +102,30 @@
 					<option value="0">No</option>
 				</field>
 				<field name="double_click_zoom"    type="radio" label="MOD_R3D_PAN_DBLZOOM_LABEL" description="MOD_R3D_PAN_DBLZOOM_DESC" default="">
-					<option value="">Use default</option>
-					<option value="1">Enable</option>
-					<option value="0">Disable</option>
+					<option value="">MOD_R3D_PAN_OPTION_DEFAULT</option>
+					<option value="1">MOD_R3D_PAN_OPTION_ENABLE</option>
+					<option value="0">MOD_R3D_PAN_OPTION_DISABLE</option>
 				</field>
 				<field name="mouse_zoom"           type="radio" label="MOD_R3D_PAN_WHEEL_LABEL"   description="MOD_R3D_PAN_WHEEL_DESC"   default="">
-					<option value="">Use default</option>
-					<option value="1">Enable</option>
-					<option value="0">Disable</option>
+					<option value="">MOD_R3D_PAN_OPTION_DEFAULT</option>
+					<option value="1">MOD_R3D_PAN_OPTION_ENABLE</option>
+					<option value="0">MOD_R3D_PAN_OPTION_DISABLE</option>
 				</field>
 				<field name="disable_keyboard_ctrl" type="radio" label="MOD_R3D_PAN_KEYBOARD_LABEL" description="MOD_R3D_PAN_KEYBOARD_DESC" default="">
-					<option value="">Use default</option>
-					<option value="1">Yes</option>
-					<option value="0">No</option>
+					<option value="">MOD_R3D_PAN_OPTION_DEFAULT</option>
+					<option value="1">MOD_R3D_PAN_OPTION_YES</option>
+					<option value="0">MOD_R3D_PAN_OPTION_NO</option>
 				</field>
 				<field name="draggable"             type="radio" label="MOD_R3D_PAN_DRAG_LABEL"     description="MOD_R3D_PAN_DRAG_DESC"     default="">
-					<option value="">Use default</option>
-					<option value="1">Enable</option>
-					<option value="0">Disable</option>
+					<option value="">MOD_R3D_PAN_OPTION_DEFAULT</option>
+					<option value="1">MOD_R3D_PAN_OPTION_ENABLE</option>
+					<option value="0">MOD_R3D_PAN_OPTION_DISABLE</option>
 				</field>
 				<field name="sp_compass" type="spacer" label="MOD_R3D_PAN_COMPASS_LABEL" description="MOD_R3D_PAN_COMPASS_DESC" />
 				<field name="compass" type="radio" label="MOD_R3D_PAN_COMPASS_TOGGLE_LABEL" description="MOD_R3D_PAN_COMPASS_TOGGLE_DESC" default="">
-					<option value="">Use default</option>
-					<option value="1">Yes</option>
-					<option value="0">No</option>
+					<option value="">MOD_R3D_PAN_OPTION_DEFAULT</option>
+					<option value="1">MOD_R3D_PAN_OPTION_YES</option>
+					<option value="0">MOD_R3D_PAN_OPTION_NO</option>
 				</field>
 				<field
                     name="north_offset"
@@ -149,12 +149,13 @@
                     min="0"
                     max="50" 
                 />
-				<field name="first_scene" type="text" label="First tour scene" description="Optional scene ID. Invalid or empty values use the first valid scene." showon="viewer_mode:tour" />
-				<field name="scene_fade_duration" type="number" filter="integer" min="0" max="60000" label="Scene fade duration (ms)" showon="viewer_mode:tour" />
-				<field name="scenes" type="subform" formsource="modules/mod_r3d_pannellum/forms/scene.xml" label="Tour scenes" description="Each scene needs a unique ID and panorama." multiple="true" layout="joomla.form.field.subform.repeatable" buttons="add,remove,drag" min="0" max="50" showon="viewer_mode:tour" />
+				<field name="first_scene" type="text" label="MOD_R3D_PAN_FIRST_SCENE_LABEL" description="MOD_R3D_PAN_FIRST_SCENE_DESC" showon="viewer_mode:tour" />
+				<field name="scene_fade_duration" type="number" filter="integer" min="0" max="60000" label="MOD_R3D_PAN_SCENE_FADE_LABEL" showon="viewer_mode:tour" />
+				<field name="scenes" type="subform" formsource="modules/mod_r3d_pannellum/forms/scene.xml" label="MOD_R3D_PAN_SCENES_LABEL" description="MOD_R3D_PAN_SCENES_DESC" multiple="true" layout="joomla.form.field.subform.repeatable" buttons="add,remove,drag" min="0" max="50" showon="viewer_mode:tour" />
 			</fieldset>
 			<fieldset name="advanced" label="MOD_R3D_PAN_FIELDSET_TOUR" />
 		</fields>
 	</config>
 </extension>
+
 
