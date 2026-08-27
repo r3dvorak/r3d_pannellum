@@ -21,7 +21,7 @@
 - [x] Verify German administrator UI resolves new constants in German without English fallback.
 - [x] Replace all extension-controlled visible XML strings with module language constants.
 - [ ] Add complete matching English and German translations for tour fields, options, descriptions, picker controls, validation, and status messages.
-- [ ] Add a regression check that required language keys exist and new form labels are not hardcoded.
+- [x] Add a regression check that required language keys exist and new form labels are not hardcoded.
 
 ## Tour settings
 
