@@ -12,6 +12,12 @@ preserved. The package supports Joomla 4.4, 5.x, and 6.x. Builds now use an
 explicit inventory and deterministic archives; release gates include artifact
 SHA-256 binding, guarded Live publication, NoPublish safety, and regressions.
 
+- Added local administrator visual hotspot placement for single panoramas and
+  individual tour scenes, with safe preview URL validation, temporary markers,
+  decimal coordinate writeback, and non-mutating cancellation.
+- Added picker regression coverage and explicit package inventory/archive
+  validation for picker assets.
+
 ## [5.2.20] - 2026-06-02
 
 - Added the package language files under the exact paths Joomla looks for during install.

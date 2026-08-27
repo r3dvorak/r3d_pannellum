@@ -46,5 +46,5 @@
 
 ## Documentation
 
-- [ ] Add concise README guidance for the three backend sections and visual hotspot placement workflow.
-- [ ] Update the 5.3.0 changelog after implementation and passing tests.
+- [x] Add concise README guidance for the three backend sections and visual hotspot placement workflow.
+- [x] Update the 5.3.0 changelog after implementation and passing tests.

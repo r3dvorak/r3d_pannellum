@@ -19,6 +19,22 @@ configured scene is used. Each scene has its own hotspots. A scene hotspot
 uses its target `sceneId` and may specify `targetYaw`, `targetPitch`, and
 `targetHfov`; invalid targets are safely ignored.
 
+## Module Editor
+
+The module editor is organized into three sections. **Panorama & Display**
+contains the viewer mode, container, panorama, and shared viewer controls.
+**Hotspots & Scenes** contains either the single-panorama hotspots or the
+repeatable tour scenes and their per-scene hotspots. **Multi-Scene Tour** is
+reserved for tour-specific configuration without changing stored single-mode
+parameters.
+
+Each hotspot row includes **Place visually**. It opens a local Pannellum
+preview of the root panorama in single mode or of the enclosing scene panorama
+in tour mode. Click the preview to place a temporary marker, then select
+**Apply** to write decimal yaw and pitch values to that row. **Cancel** closes
+the preview without changing fields. The control uses delegated events, so it
+also works for repeatable rows added, removed, or reordered in the editor.
+
 ## Compatibility
 
 - Joomla 4.4 with PHP 8.1 or newer
