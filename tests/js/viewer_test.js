@@ -70,6 +70,12 @@ const adminSource = fs.readFileSync(adminPath, 'utf8');
 if (/attributes\s*:\s*true/.test(adminSource)) {
     throw new Error('Admin MutationObserver still watches its own style mutations.');
 }
+for (const required of ['function getViewerModeSelect', 'function toggleModeTabs', "select.value === 'tour'", 'singleHotspots', 'var tour']) {
+    if (!adminSource.includes(required)) throw new Error(`Mode-aware tab visibility is missing ${required}.`);
+}
+if (adminSource.includes('jform[params][setup_level]')) {
+    throw new Error('Obsolete setup-level tab visibility is still active.');
+}
 
 const pickerPath = path.join(__dirname, '..', '..', '01_src', 'packages', 'plg_system_r3d_adminui', 'media', 'picker.js');
 const pickerSource = fs.readFileSync(pickerPath, 'utf8');

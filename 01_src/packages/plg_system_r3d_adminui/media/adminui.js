@@ -5,8 +5,8 @@
         return Array.prototype.slice.call((root || document).querySelectorAll(selector));
     }
 
-    function getSetupSelect() {
-        return document.querySelector('[name="jform[params][setup_level]"]');
+    function getViewerModeSelect() {
+        return document.querySelector('[name="jform[params][viewer_mode]"]');
     }
 
     function getMainTab() {
@@ -49,28 +49,24 @@
         }
     }
 
-    function toggleTabs() {
-        var select = getSetupSelect();
+    function toggleModeTabs() {
+        var select = getViewerModeSelect();
         var controls = getTopTabButtons();
         if (!select || !controls.length) {
             return;
         }
 
         controls.forEach(function (control) {
-            var intermediate = /(^|-)intermediate$/.test(control.targetId);
-            var advanced = /(^|-)advanced$/.test(control.targetId);
-            var hide = select.value === 'basic'
-                ? intermediate || advanced
-                : select.value === 'intermediate' && advanced;
+            var singleHotspots = /(^|-)intermediate$/.test(control.targetId);
+            var tour = /(^|-)tour$/.test(control.targetId);
+            var hide = select.value === 'tour' ? singleHotspots : tour;
             var display = hide ? 'none' : '';
 
             setDisplay(control.element, display);
             setDisplay(control.pane, display);
 
             if (hide && isActive(control)) {
-                var next = controls.find(function (candidate) {
-                    return candidate.targetId === 'general' && candidate.element.style.display !== 'none';
-                }) || firstVisible(controls);
+                var next = firstVisible(controls);
                 if (next && typeof next.element.click === 'function') {
                     next.element.click();
                 }
@@ -79,14 +75,14 @@
     }
 
     function boot() {
-        var select = getSetupSelect();
+        var select = getViewerModeSelect();
         if (!select || select.hasAttribute('data-r3d-adminui-ready')) {
             return;
         }
 
         select.setAttribute('data-r3d-adminui-ready', 'true');
-        select.addEventListener('change', toggleTabs);
-        toggleTabs();
+        select.addEventListener('change', toggleModeTabs);
+        toggleModeTabs();
 
         var mainTab = getMainTab();
         if (mainTab && window.MutationObserver) {
@@ -98,7 +94,7 @@
                 pending = true;
                 window.requestAnimationFrame(function () {
                     pending = false;
-                    toggleTabs();
+                    toggleModeTabs();
                 });
             });
             observer.observe(mainTab, { childList: true, subtree: true });

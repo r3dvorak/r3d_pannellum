@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension type="module" client="site" method="upgrade">
 	<name>MOD_R3D_PANNELLUM</name>
-	<version>5.3.14</version>
+	<version>5.3.15</version>
 	<creationDate>2026-08-27</creationDate>
 	<author>Richard Dvorak, r3d.de</author>
 	<authorEmail>dev@r3d.de</authorEmail>
 	<authorUrl>https://r3d.de</authorUrl>
 	<copyright>Copyright (C) 2025 Richard Dvorak, https://r3d.de</copyright>
 	<license>GPL-3.0-or-later</license>
-	<description>Embed 360° Panoramas with Pannellum (Basic / Intermediate / Advanced)</description>
+	<description>MOD_R3D_PANNELLUM_DESC</description>
 	<files>
 		<filename module="mod_r3d_pannellum">mod_r3d_pannellum.php</filename>
 		<filename>helper.php</filename>
