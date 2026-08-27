@@ -31,10 +31,10 @@
 		<!-- Everything below shows inside the "Module" tab -->
 		<fields name="params">
 			<!-- BASIC: always visible; Setup Level first -->
-			<fieldset name="basic" label="Basic Settings">
-				<field name="viewer_mode" type="radio" default="single" label="Viewer mode" description="Use Tour only when at least one valid scene is configured.">
-					<option value="single">Single panorama</option>
-					<option value="tour">Multi-scene tour</option>
+			<fieldset name="basic" label="MOD_R3D_PAN_FIELDSET_DISPLAY">
+				<field name="viewer_mode" type="radio" default="single" label="MOD_R3D_PAN_VIEWER_MODE_LABEL" description="MOD_R3D_PAN_VIEWER_MODE_DESC">
+					<option value="single">MOD_R3D_PAN_VIEWER_MODE_SINGLE</option>
+					<option value="tour">MOD_R3D_PAN_VIEWER_MODE_TOUR</option>
 				</field>
 				<field
                     name="setup_note"
@@ -137,7 +137,7 @@
                     min="0" max="360" step="1" />
 			</fieldset>
 			<!-- INTERMEDIATE: only when intermediate or advanced -->
-			<fieldset name="intermediate" label="Intermediate Settings">
+			<fieldset name="intermediate" label="MOD_R3D_PAN_FIELDSET_HOTSPOTS">
 				<field name="hotspots"
                     type="subform"
                     formsource="modules/mod_r3d_pannellum/forms/hotspot.xml"
@@ -153,10 +153,7 @@
 				<field name="scene_fade_duration" type="number" filter="integer" min="0" max="60000" label="Scene fade duration (ms)" showon="viewer_mode:tour" />
 				<field name="scenes" type="subform" formsource="modules/mod_r3d_pannellum/forms/scene.xml" label="Tour scenes" description="Each scene needs a unique ID and panorama." multiple="true" layout="joomla.form.field.subform.repeatable" buttons="add,remove,drag" min="0" max="50" showon="viewer_mode:tour" />
 			</fieldset>
-			<!-- ADVANCED: only when advanced -->
-			<fieldset name="advanced" label="Advanced Settings">
-				<field name="mock_advanced" type="spacer" label="Advanced Mockup" description="Multi-scene tour settings will come here." />
-			</fieldset>
+			<fieldset name="advanced" label="MOD_R3D_PAN_FIELDSET_TOUR" />
 		</fields>
 	</config>
 </extension>

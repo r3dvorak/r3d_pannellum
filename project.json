@@ -7,7 +7,7 @@
     "updateServerUrl": "https://extensions.r3d.de/joomlaextensions/updates/pkg_r3d_pannellum.xml",
     "changelogUrl": "https://github.com/r3dvorak/r3d_pannellum/blob/main/CHANGELOG.md",
     "defaults": {
-      "version": "5.3.0",
+      "version": "5.3.1",
       "creationDate": "2026-08-27"
     },
     "author": {
@@ -47,3 +47,4 @@
     "versioning": "semver"
   }
 }
+
