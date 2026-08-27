@@ -2,17 +2,19 @@
 /**
  * @package     Joomla.Package
  * @subpackage  pkg_r3d_pannellum
- * @creationDate 2025-09-15
+ * @creationDate 2026-08-27
  * @author      Richard Dvorak, r3d.de
  * @copyright   Copyright (C) 2025 Richard Dvorak, https://r3d.de
  * @license     GPL-3.0-or-later https://www.gnu.org/licenses/gpl-3.0.html
- * @version     5.2.20
+ * @version     5.3.0
  */
 
 defined('_JEXEC') or die;
 
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Log\Log;
+use Joomla\Database\DatabaseInterface;
 
 /**
  * Package installer script: post-install tweaks.
@@ -20,7 +22,8 @@ use Joomla\CMS\Language\Text;
 final class pkg_r3d_pannellumInstallerScript
 {
     /**
-     * Auto-enable the module and system plugin after install/update.
+     * Enable the helper plugin on first install and direct the administrator
+     * to create a module instance. Updates preserve existing extension state.
      *
      * @param string $type
      * @param object $parent
@@ -28,40 +31,46 @@ final class pkg_r3d_pannellumInstallerScript
      */
     public function postflight($type, $parent): void
     {
-        try {
-            Factory::getApplication()->getLanguage()->load('pkg_r3d_pannellum', JPATH_ADMINISTRATOR);
-
-            $db = Factory::getContainer()->get('DatabaseDriver');
-
-            $this->enableExtension($db, 'module', 'mod_r3d_pannellum', '');
-            $this->enableExtension($db, 'plugin', 'r3d_adminui', 'system');
-
-            $modulesUrl = 'index.php?option=com_modules&view=modules&filter[search]=R3D';
-            Factory::getApplication()->enqueueMessage(
-                Text::sprintf(
-                    'PKG_R3D_PANNELLUM_POSTINSTALL_CHECK_MODULE',
-                    $modulesUrl
-                ),
-                'success'
-            );
-        } catch (\Throwable $e) {
-            // Soft-fail: don't block package install if enabling fails.
+        if (!in_array($type, ['install', 'discover_install'], true)) {
+            return;
         }
+
+        $application = Factory::getApplication();
+        $application->getLanguage()->load('pkg_r3d_pannellum.sys', JPATH_ADMINISTRATOR);
+
+        try {
+            $db = Factory::getContainer()->get(DatabaseInterface::class);
+            if (!$this->enableExtension($db, 'plugin', 'r3d_adminui', 'system')) {
+                throw new \RuntimeException('The r3d_adminui system plugin extension row was not found.');
+            }
+        } catch (\Throwable $e) {
+            Log::add($e->getMessage(), Log::WARNING, 'pkg_r3d_pannellum');
+            $application->enqueueMessage(
+                Text::_('PKG_R3D_PANNELLUM_POSTINSTALL_ENABLE_WARNING'),
+                'warning'
+            );
+        }
+
+        $modulesUrl = 'index.php?option=com_modules&view=modules&client_id=0';
+        $application->enqueueMessage(
+            Text::sprintf('PKG_R3D_PANNELLUM_POSTINSTALL_CREATE_MODULE', $modulesUrl),
+            'message'
+        );
     }
 
     /**
      * Enable a specific extension row if it exists.
      *
-     * @param object $db
+     * @param DatabaseInterface $db
      * @param string $type
      * @param string $element
      * @param string $folder
-     * @return void
+     * @return bool
      */
-    private function enableExtension($db, string $type, string $element, string $folder): void
+    private function enableExtension(DatabaseInterface $db, string $type, string $element, string $folder): bool
     {
         $query = $db->getQuery(true)
-            ->select($db->quoteName('extension_id'))
+            ->select([$db->quoteName('extension_id'), $db->quoteName('enabled')])
             ->from($db->quoteName('#__extensions'))
             ->where($db->quoteName('type') . ' = ' . $db->quote($type))
             ->where($db->quoteName('element') . ' = ' . $db->quote($element))
@@ -73,15 +82,20 @@ final class pkg_r3d_pannellumInstallerScript
             $query->where($db->quoteName('client_id') . ' = 0');
         }
 
-        $extensionId = (int) $db->setQuery($query)->loadResult();
+        $extension = $db->setQuery($query)->loadAssoc();
 
-        if ($extensionId) {
+        if (!$extension) {
+            return false;
+        }
+
+        if ((int) $extension['enabled'] !== 1) {
             $query = $db->getQuery(true)
                 ->update($db->quoteName('#__extensions'))
                 ->set($db->quoteName('enabled') . ' = 1')
-                ->where($db->quoteName('extension_id') . ' = ' . (int) $extensionId);
-
+                ->where($db->quoteName('extension_id') . ' = ' . (int) $extension['extension_id']);
             $db->setQuery($query)->execute();
         }
+
+        return true;
     }
 }

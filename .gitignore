@@ -4,7 +4,6 @@
 03_docs/
 relaunch/
 05_updates/
-scripts/
 
 # Temp
 *.tmp
@@ -15,16 +14,13 @@ scripts/
 *.code-workspace
 
 # Local secrets / environment
-.env
-.ENV
-.env.local
-.ENV.local
-.env.*.local
-.ENV.*.local
+.env*
+.ENV*
+!.env.example
+!.ENV.example
 .venv/
 .vscode/
 .idea/
 AGENTS.md
-project.json
 session.json
 .codex/session.json

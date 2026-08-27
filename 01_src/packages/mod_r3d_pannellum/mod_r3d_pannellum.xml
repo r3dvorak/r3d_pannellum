@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension type="module" client="site" method="upgrade">
 	<name>MOD_R3D_PANNELLUM</name>
-	<version>5.2.6</version>
-	<creationDate>2025-09-14</creationDate>
+	<version>5.3.0</version>
+	<creationDate>2026-08-27</creationDate>
 	<author>Richard Dvorak, r3d.de</author>
 	<authorEmail>dev@r3d.de</authorEmail>
 	<authorUrl>https://r3d.de</authorUrl>
@@ -15,13 +15,11 @@
 		<folder>tmpl</folder>
 		<folder>language</folder>
 		<folder>forms</folder>
-		<folder>media</folder>
 	</files>
 	<media destination="mod_r3d_pannellum" folder="media">
 		<filename>demo.jpg</filename>
-		<folder>pannellum</folder>	
-		<filename>pannellum/pannellum.js</filename>
-		<filename>pannellum/pannellum.css</filename>
+		<filename>viewer.js</filename>
+		<folder>pannellum</folder>
 	</media>
 	<languages>
 		<language tag="en-GB">language/en-GB/en-GB.mod_r3d_pannellum.ini</language>
@@ -34,22 +32,10 @@
 		<fields name="params">
 			<!-- BASIC: always visible; Setup Level first -->
 			<fieldset name="basic" label="Basic Settings">
-				<!-- NEW: Asset loading -->
-				<field
-					name="useCdn"
-					type="radio"
-					label="Load Pannellum from CDN?"
-					description="If enabled, tries to load pannellum.js from CDN (with fallback to local if it fails). If disabled, only local files are used."
-					default="1">
-					<option value="1">CDN (recommended, always up to date)</option>
-					<option value="0">Local only (from module media)</option>
+				<field name="viewer_mode" type="radio" default="single" label="Viewer mode" description="Use Tour only when at least one valid scene is configured.">
+					<option value="single">Single panorama</option>
+					<option value="tour">Multi-scene tour</option>
 				</field>
-				<field
-					name="cdnVersion"
-					type="text"
-					label="Pannellum CDN Version"
-					description="Set the major/minor version to use from the CDN (e.g. 2.5.6)."
-					default="2.5.6" />
 				<field
                     name="setup_note"
                     type="note"
@@ -163,6 +149,9 @@
                     min="0"
                     max="50" 
                 />
+				<field name="first_scene" type="text" label="First tour scene" description="Optional scene ID. Invalid or empty values use the first valid scene." showon="viewer_mode:tour" />
+				<field name="scene_fade_duration" type="number" filter="integer" min="0" max="60000" label="Scene fade duration (ms)" showon="viewer_mode:tour" />
+				<field name="scenes" type="subform" formsource="modules/mod_r3d_pannellum/forms/scene.xml" label="Tour scenes" description="Each scene needs a unique ID and panorama." multiple="true" layout="joomla.form.field.subform.repeatable" buttons="add,remove,drag" min="0" max="50" showon="viewer_mode:tour" />
 			</fieldset>
 			<!-- ADVANCED: only when advanced -->
 			<fieldset name="advanced" label="Advanced Settings">

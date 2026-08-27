@@ -1,5 +1,17 @@
 # Changelog
 
+## [5.3.0] - Unreleased
+
+Feature release: added backward-compatible multi-scene panorama tours with
+repeatable scene configuration, scene-to-scene hotspots, per-scene hotspots,
+and deterministic first-scene selection. Bundled Pannellum is updated from
+2.5.6 to 2.5.7, including upstream hotspot and URL hardening; local assets are
+the deterministic default. Viewer URLs, hotspots, and numeric configuration
+are hardened while escaped hotspot rendering and single-panorama instances are
+preserved. The package supports Joomla 4.4, 5.x, and 6.x. Builds now use an
+explicit inventory and deterministic archives; release gates include artifact
+SHA-256 binding, guarded Live publication, NoPublish safety, and regressions.
+
 ## [5.2.20] - 2026-06-02
 
 - Added the package language files under the exact paths Joomla looks for during install.
