@@ -1,36 +1,182 @@
 (function () {
     'use strict';
+
+    var markerId = 'r3d-pan-picker-marker';
     var state = { row: null, yaw: null, pitch: null, viewer: null, modal: null };
-    function input(row, name) { return row.querySelector('[name*="[hotspot][' + name + ']"]'); }
-    function safeUrl(value) {
-        value = (value || '').trim();
-        if (!value || /^\/\//.test(value) || /\\/.test(value) || /^javascript:/i.test(value)) { return null; }
-        try { return new URL(value, window.location.origin).href; } catch (e) { return null; }
+
+    function hotspotInput(row, name) {
+        return row.querySelector('[name*="[hotspot][' + name + ']"]');
     }
+
+    function safeUrl(value) {
+        value = String(value || '').trim();
+        if (!value || /[\x00-\x1F\x7F]/.test(value) || /^\/\//.test(value) || /\\/.test(value)) {
+            return null;
+        }
+        try {
+            var url = new URL(value, window.location.origin);
+            return url.protocol === 'http:' || url.protocol === 'https:' ? url.href : null;
+        } catch (error) {
+            return null;
+        }
+    }
+
     function panoramaFor(row) {
         var scope = row;
         while (scope) {
-            var scene = scope.querySelector('[name*="[scene][panorama]"]');
-            if (scene) { return scene; }
+            var scenePanorama = scope.querySelector('[name*="[scene][panorama]"]');
+            if (scenePanorama) {
+                return scenePanorama;
+            }
             scope = scope.parentElement;
         }
         return document.querySelector('[name="jform[params][panorama]"]');
     }
 
-    window.R3dPannellumPicker = { safeUrl: safeUrl, panoramaFor: panoramaFor };
-    function status(message) { state.modal.querySelector('[data-r3d-coords]').textContent = message || ''; }
-    function close() { if (state.viewer) { state.viewer.destroy(); } state.viewer = null; state.modal.hidden = true; state.row = null; }
+    function formatCoordinate(value) {
+        return Number(value).toFixed(6).replace(/\.?0+$/, '');
+    }
+
+    function status(message) {
+        state.modal.querySelector('[data-r3d-coords]').textContent = message || '';
+    }
+
+    function clearPreview() {
+        if (state.viewer) {
+            state.viewer.destroy();
+        }
+        state.viewer = null;
+    }
+
+    function close() {
+        clearPreview();
+        state.modal.hidden = true;
+        state.row = null;
+        state.yaw = null;
+        state.pitch = null;
+    }
+
+    function apply() {
+        if (state.row && state.yaw !== null && state.pitch !== null) {
+            ['yaw', 'pitch'].forEach(function (name) {
+                var field = hotspotInput(state.row, name);
+                if (!field) {
+                    return;
+                }
+                field.value = name === 'yaw' ? state.yaw : state.pitch;
+                ['input','change'].forEach(function (type) {
+                    field.dispatchEvent(new Event(type, { bubbles: true }));
+                });
+            });
+        }
+        close();
+    }
+
+    function setCoordinates(event, labels) {
+        var coordinates;
+        try {
+            coordinates = state.viewer.mouseEventToCoords(event);
+        } catch (error) {
+            return;
+        }
+        if (!coordinates || !isFinite(coordinates[0]) || !isFinite(coordinates[1])) {
+            return;
+        }
+        state.pitch = formatCoordinate(coordinates[0]);
+        state.yaw = formatCoordinate(coordinates[1]);
+        try {
+            state.viewer.removeHotSpot(markerId);
+        } catch (error) {
+            // The marker is absent before the first selection.
+        }
+        state.viewer.addHotSpot({ id: markerId, type: 'info', pitch: Number(state.pitch), yaw: Number(state.yaw) });
+        status((labels.yaw || '') + ': ' + state.yaw + '; ' + (labels.pitch || '') + ': ' + state.pitch);
+    }
+
     function makeModal() {
-        var labels=(window.Joomla&&Joomla.getOptions('mod_r3d_pannellum.picker'))||{}, modal = document.createElement('div'), dialog=document.createElement('div'), title=document.createElement('h2'), help=document.createElement('p'), host=document.createElement('div'), coords=document.createElement('p'), apply=document.createElement('button'), cancel=document.createElement('button'); modal.className='r3d-pan-picker'; modal.hidden=true; dialog.className='r3d-pan-picker__dialog'; dialog.setAttribute('role','dialog'); dialog.setAttribute('aria-modal','true'); title.textContent=labels.title||''; help.textContent=labels.help||''; host.className='r3d-pan-picker__viewer'; coords.setAttribute('data-r3d-coords',''); apply.type=cancel.type='button'; apply.setAttribute('data-r3d-apply',''); cancel.setAttribute('data-r3d-cancel',''); apply.textContent=labels.apply||''; cancel.textContent=labels.cancel||''; dialog.append(title,help,host,coords,apply,cancel); modal.appendChild(dialog);
-        document.body.appendChild(modal); modal.querySelector('[data-r3d-cancel]').addEventListener('click', close);
-        modal.querySelector('[data-r3d-apply]').addEventListener('click', function () { if (state.row && state.yaw !== null) { ['yaw','pitch'].forEach(function (n) { var el=input(state.row,n); if(el){el.value=String(n==='yaw'?state.yaw:state.pitch); ['input','change'].forEach(function(t){el.dispatchEvent(new Event(t,{bubbles:true}));});} }); } close(); });
+        var labels = (window.Joomla && Joomla.getOptions('mod_r3d_pannellum.picker')) || {};
+        var modal = document.createElement('div');
+        var dialog = document.createElement('div');
+        var title = document.createElement('h2');
+        var help = document.createElement('p');
+        var host = document.createElement('div');
+        var coords = document.createElement('p');
+        var actions = document.createElement('p');
+        var applyButton = document.createElement('button');
+        var cancelButton = document.createElement('button');
+
+        modal.className = 'r3d-pan-picker';
+        modal.hidden = true;
+        dialog.className = 'r3d-pan-picker__dialog';
+        dialog.setAttribute('role', 'dialog');
+        dialog.setAttribute('aria-modal', 'true');
+        title.textContent = labels.title || '';
+        help.textContent = labels.help || '';
+        host.className = 'r3d-pan-picker__viewer';
+        coords.setAttribute('data-r3d-coords', '');
+        actions.className = 'r3d-pan-picker__actions';
+        applyButton.type = cancelButton.type = 'button';
+        applyButton.setAttribute('data-r3d-apply', '');
+        cancelButton.setAttribute('data-r3d-cancel', '');
+        applyButton.textContent = labels.apply || '';
+        cancelButton.textContent = labels.cancel || '';
+        actions.append(applyButton, cancelButton);
+        dialog.append(title, help, host, coords, actions);
+        modal.appendChild(dialog);
+        document.body.appendChild(modal);
+        cancelButton.addEventListener('click', close);
+        applyButton.addEventListener('click', apply);
         return modal;
     }
+
+    function open(button) {
+        var row = button.closest('.subform-repeatable-group, .row');
+        var panorama = row && panoramaFor(row);
+        var labels = (window.Joomla && Joomla.getOptions('mod_r3d_pannellum.picker')) || {};
+
+        if (!row || !window.pannellum) {
+            return;
+        }
+        state.modal = state.modal || makeModal();
+        state.row = row;
+        state.yaw = null;
+        state.pitch = null;
+        if (!panorama || !panorama.value) {
+            state.modal.hidden = false;
+            status(labels.missing);
+            return;
+        }
+        var url = safeUrl(panorama.value);
+        if (!url) {
+            state.modal.hidden = false;
+            status(labels.invalid);
+            return;
+        }
+
+        clearPreview();
+        var host = state.modal.querySelector('.r3d-pan-picker__viewer');
+        host.textContent = '';
+        state.modal.hidden = false;
+        state.viewer = window.pannellum.viewer(host, {
+            type: 'equirectangular', panorama: url, autoLoad: true, escapeHTML: true
+        });
+        state.viewer.on('error', function () { status(labels.invalid); });
+        host.onclick = function (event) { setCoordinates(event, labels); };
+    }
+
+    // Delegation keeps the picker working for Joomla repeatable subform rows added or reordered after load.
     document.addEventListener('click', function (event) {
-        var button = event.target.closest('.r3d-pan-picker-button'); if (!button) { return; }
-        var row = button.closest('.subform-repeatable-group, .row'), panorama = row && panoramaFor(row), labels=(window.Joomla&&Joomla.getOptions('mod_r3d_pannellum.picker'))||{};
-        if (!row || !window.pannellum) { return; } state.modal=state.modal||makeModal(); if (!panorama || !panorama.value) { state.modal.hidden=false; status(labels.missing); return; } var url = safeUrl(panorama.value); if (!url) { state.modal.hidden=false; status(labels.invalid); return; }
-        state.row=row; state.yaw=null; state.pitch=null; state.modal=state.modal||makeModal(); var host=state.modal.querySelector('.r3d-pan-picker__viewer'); host.textContent=''; state.modal.hidden=false;
-        state.viewer=window.pannellum.viewer(host,{type:'equirectangular',panorama:url,autoLoad:true,escapeHTML:true}); state.viewer.on('error',function(){status(labels.invalid);}); host.addEventListener('mousedown',function(e){var c=state.viewer.mouseEventToCoords(e);state.pitch=c[0];state.yaw=c[1];status((labels.yaw||'')+': '+state.yaw+'; '+(labels.pitch||'')+': '+state.pitch);},{once:true});
+        var button = event.target.closest('.r3d-pan-picker-button');
+        if (button) {
+            open(button);
+        }
     });
+
+    window.R3dPannellumPicker = {
+        safeUrl: safeUrl,
+        panoramaFor: panoramaFor,
+        formatCoordinate: formatCoordinate,
+        apply: apply,
+        close: close
+    };
 }());

@@ -1,1 +1,5 @@
-.r3d-pan-picker[hidden]{display:none}.r3d-pan-picker{position:fixed;inset:0;z-index:1100;background:#0008;padding:5vh 10vw}.r3d-pan-picker__dialog{background:#fff;padding:1rem;height:90vh}.r3d-pan-picker__viewer{height:70vh;width:100%}
+.r3d-pan-picker[hidden] { display: none; }
+.r3d-pan-picker { background: rgb(0 0 0 / 53%); inset: 0; padding: 5vh 10vw; position: fixed; z-index: 1100; }
+.r3d-pan-picker__dialog { background: #fff; height: 90vh; padding: 1rem; }
+.r3d-pan-picker__viewer { height: 70vh; width: 100%; }
+.r3d-pan-picker__actions { display: flex; gap: .5rem; }

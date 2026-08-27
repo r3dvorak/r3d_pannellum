@@ -33,9 +33,9 @@
 
 - [x] Add project-owned administrator picker JavaScript and CSS, loaded through Joomla Web Assets only on the module editor.
 - [x] Load bundled local Pannellum 2.5.7 assets for the modal preview; do not alter vendor files or use a CDN.
-- [ ] Implement safe panorama URL handling, click-to-coordinate conversion, temporary marker, Apply, and Cancel.
-- [ ] Support both root single-panorama hotspot rows and scene-contained hotspot rows through delegated events after add/remove/reorder.
-- [ ] Trigger input and change events after Apply; preserve decimal yaw/pitch values and leave fields unchanged on Cancel.
+- [x] Implement safe panorama URL handling, click-to-coordinate conversion, temporary marker, Apply, and Cancel.
+- [x] Support both root single-panorama hotspot rows and scene-contained hotspot rows through delegated events after add/remove/reorder.
+- [x] Trigger input and change events after Apply; preserve decimal yaw/pitch values and leave fields unchanged on Cancel.
 
 ## Tests
 
