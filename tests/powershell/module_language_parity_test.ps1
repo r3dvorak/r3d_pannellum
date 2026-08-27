@@ -69,4 +69,9 @@ foreach ($fieldName in @('yaw', 'pitch', 'hfov', 'min_hfov', 'max_hfov')) {
     }
 }
 
+$adminPlugin = Get-Content -LiteralPath (Join-Path $root '01_src\packages\plg_system_r3d_adminui\r3d_adminui.php') -Raw
+if ($adminPlugin -notmatch "'com_modules', 'com_advancedmodules'") {
+    throw 'The administrator UI plugin must load for both Joomla module editors.'
+}
+
 Write-Host 'Module language parity regression test: OK'

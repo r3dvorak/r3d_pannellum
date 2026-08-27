@@ -6,7 +6,7 @@
  * @author      Richard Dvorak, r3d.de
  * @copyright   Copyright (C) 2025 Richard Dvorak, https://r3d.de
  * @license     GNU GPL v3 or later (https://www.gnu.org/licenses/gpl-3.0.html)
- * @version     5.3.16
+ * @version     5.3.17
  * @file        plugins/system/r3d_adminui/r3d_adminui.php
  */
 
@@ -28,7 +28,7 @@ final class PlgSystemR3d_adminui extends CMSPlugin
         }
 
         $in = $this->app->getInput();
-        if ($in->getCmd('option') !== 'com_modules' || $in->getCmd('view') !== 'module') {
+        if (!in_array($in->getCmd('option'), ['com_modules', 'com_advancedmodules'], true) || $in->getCmd('view') !== 'module') {
             return;
         }
 
@@ -76,15 +76,15 @@ final class PlgSystemR3d_adminui extends CMSPlugin
 			'globalTab' => Text::_('MOD_R3D_PAN_FIELDSET_GLOBAL'),
 		]);
 		$wa = $document->getWebAssetManager();
-		$wa->registerAndUseStyle('plg_system_r3d_adminui.picker', 'media/plg_system_r3d_adminui/picker.css', ['version' => '5.3.16', 'relative' => true]);
+		$wa->registerAndUseStyle('plg_system_r3d_adminui.picker', 'media/plg_system_r3d_adminui/picker.css', ['version' => '5.3.17', 'relative' => true]);
 		$wa->registerAndUseStyle('plg_system_r3d_adminui.pannellum', 'media/mod_r3d_pannellum/pannellum/pannellum.css', ['version' => '2.5.7', 'relative' => true]);
 		$wa->registerAndUseScript('plg_system_r3d_adminui.pannellum', 'media/mod_r3d_pannellum/pannellum/pannellum.js', ['version' => '2.5.7', 'relative' => true], ['defer' => true]);
 		$wa->registerAndUseScript(
             'plg_system_r3d_adminui.admin',
             'media/plg_system_r3d_adminui/adminui.js',
-			['version' => '5.3.16', 'relative' => true],
+			['version' => '5.3.17', 'relative' => true],
 			['defer' => true], ['plg_system_r3d_adminui.pannellum']
         );
-		$wa->registerAndUseScript('plg_system_r3d_adminui.picker', 'media/plg_system_r3d_adminui/picker.js', ['version' => '5.3.16', 'relative' => true], ['defer' => true], ['plg_system_r3d_adminui.pannellum']);
+		$wa->registerAndUseScript('plg_system_r3d_adminui.picker', 'media/plg_system_r3d_adminui/picker.js', ['version' => '5.3.17', 'relative' => true], ['defer' => true], ['plg_system_r3d_adminui.pannellum']);
     }
 }
