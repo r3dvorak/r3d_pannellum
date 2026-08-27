@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension type="module" client="site" method="upgrade">
 	<name>MOD_R3D_PANNELLUM</name>
-	<version>5.3.13</version>
+	<version>5.3.14</version>
 	<creationDate>2026-08-27</creationDate>
 	<author>Richard Dvorak, r3d.de</author>
 	<authorEmail>dev@r3d.de</authorEmail>
@@ -136,11 +136,14 @@
                     max="50"
 					showon="viewer_mode:single"
                 />
+			</fieldset>
+			<!-- Do not name this fieldset "advanced": Joomla injects its core module
+			     Advanced fields into that reserved group. -->
+			<fieldset name="tour" label="MOD_R3D_PAN_FIELDSET_TOUR">
 				<field name="first_scene" type="text" label="MOD_R3D_PAN_FIRST_SCENE_LABEL" description="MOD_R3D_PAN_FIRST_SCENE_DESC" showon="viewer_mode:tour" />
 				<field name="scene_fade_duration" type="number" filter="integer" min="0" max="60000" label="MOD_R3D_PAN_SCENE_FADE_LABEL" showon="viewer_mode:tour" />
 				<field name="scenes" type="subform" formsource="modules/mod_r3d_pannellum/forms/scene.xml" label="MOD_R3D_PAN_SCENES_LABEL" description="MOD_R3D_PAN_SCENES_DESC" multiple="true" layout="joomla.form.field.subform.repeatable" buttons="add,remove,drag" min="0" max="50" showon="viewer_mode:tour" />
 			</fieldset>
-			<fieldset name="advanced" label="MOD_R3D_PAN_FIELDSET_TOUR" />
 		</fields>
 	</config>
 </extension>

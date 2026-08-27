@@ -41,4 +41,17 @@ foreach ($key in $referenced.Keys) {
     if (-not $de.ContainsKey($key)) { throw "Missing de-DE language key: $key" }
 }
 
+$moduleForm = $forms[0]
+[xml]$moduleXml = Get-Content -LiteralPath $moduleForm -Raw
+$tourFieldset = $moduleXml.SelectSingleNode('/extension/config/fields[@name="params"]/fieldset[@name="tour"]')
+if (-not $tourFieldset) { throw 'The dedicated tour fieldset is missing.' }
+if ($moduleXml.SelectSingleNode('/extension/config/fields[@name="params"]/fieldset[@name="advanced"]')) {
+    throw 'The module form must not use Joomla reserved fieldset name "advanced" for tour settings.'
+}
+foreach ($fieldName in @('first_scene', 'scene_fade_duration', 'scenes')) {
+    if (-not $tourFieldset.SelectSingleNode("field[@name='$fieldName']")) {
+        throw "Tour field '$fieldName' is not in the dedicated tour fieldset."
+    }
+}
+
 Write-Host 'Module language parity regression test: OK'
