@@ -116,3 +116,13 @@ if (yaw.value !== '12.345678' || pitch.value !== '-6.500001') throw new Error('P
 if (events.join(',') !== 'yaw:input,yaw:change,pitch:input,pitch:change') throw new Error('Picker writeback events are incomplete.');
 if (picker.writeCoordinates(null, '1', '2') !== false || yaw.value !== '12.345678') throw new Error('Picker cancellation guard changed fields.');
 console.log('JavaScript picker resolution, safety, and writeback tests: OK');
+
+const pickerCssPath = path.join(__dirname, '..', '..', '01_src', 'packages', 'plg_system_r3d_adminui', 'media', 'picker.css');
+const pickerCss = fs.readFileSync(pickerCssPath, 'utf8');
+for (const required of ['.r3d-pan-picker__dialog', 'display: flex;', 'flex-direction: column;', 'max-height: 100%;', '.r3d-pan-picker__viewer', 'flex: 1 1 auto;', 'min-height: 0;']) {
+    if (!pickerCss.includes(required)) throw new Error(`Picker layout regression protection missing ${required}.`);
+}
+if (/\.r3d-pan-picker__viewer\s*\{[^}]*height:\s*70vh/s.test(pickerCss)) {
+    throw new Error('Picker viewer still uses a viewport height that can push its actions below the modal.');
+}
+console.log('JavaScript picker layout regression checks: OK');
