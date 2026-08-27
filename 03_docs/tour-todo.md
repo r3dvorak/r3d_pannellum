@@ -20,7 +20,7 @@
 - [x] Verify administrator module language files load on the Joomla 4.4 / 5 / 6 module edit view.
 - [x] Verify German administrator UI resolves new constants in German without English fallback.
 - [x] Replace all extension-controlled visible XML strings with module language constants.
-- [ ] Add complete matching English and German translations for tour fields, options, descriptions, picker controls, validation, and status messages.
+- [x] Add complete matching English and German translations for tour fields, options, descriptions, picker controls, validation, and status messages.
 - [x] Add a regression check that required language keys exist and new form labels are not hardcoded.
 
 ## Tour settings
@@ -31,16 +31,16 @@
 
 ## Visual hotspot placement
 
-- [ ] Add project-owned administrator picker JavaScript and CSS, loaded through Joomla Web Assets only on the module editor.
-- [ ] Load bundled local Pannellum 2.5.7 assets for the modal preview; do not alter vendor files or use a CDN.
+- [x] Add project-owned administrator picker JavaScript and CSS, loaded through Joomla Web Assets only on the module editor.
+- [x] Load bundled local Pannellum 2.5.7 assets for the modal preview; do not alter vendor files or use a CDN.
 - [ ] Implement safe panorama URL handling, click-to-coordinate conversion, temporary marker, Apply, and Cancel.
 - [ ] Support both root single-panorama hotspot rows and scene-contained hotspot rows through delegated events after add/remove/reorder.
 - [ ] Trigger input and change events after Apply; preserve decimal yaw/pitch values and leave fields unchanged on Cancel.
 
 ## Tests
 
-- [ ] Add an explicit regression test that a scene-b hotspot picker resolves scene-b panorama, never global or sibling-scene panorama.
-- [ ] Add an explicit regression test that a root single-mode hotspot picker resolves the global single panorama.
+- [x] Add an explicit regression test that a scene-b hotspot picker resolves scene-b panorama, never global or sibling-scene panorama.
+- [x] Add an explicit regression test that a root single-mode hotspot picker resolves the global single panorama.
 - [ ] Add JavaScript tests for row/panorama resolution, writeback, cancellation, delegated dynamic rows, and safe preview handling.
 - [ ] Run PHP lint/tests, JavaScript syntax/tests, XML/JSON checks, PowerShell parser/tests, isolated deterministic build, archive validation, and `git diff --check`.
 
