@@ -89,9 +89,9 @@ namespace {
     expect($config['hotSpots'][1]['URL'] === 'https://example.test/info', 'Valid HTTPS URL was removed.');
 
     $tour = ModR3dPannellumHelper::build(new Joomla\Registry\Registry([
-        'viewer_mode' => 'tour', 'first_scene' => 'scene-b',
+        'viewer_mode' => 'tour', 'first_scene' => 'scene-b', 'auto_rotate' => 2, 'show_zoom_ctrl' => '0', 'compass' => '1', 'scene_fade_duration' => 300,
         'scenes' => [[
-            'scene' => ['sceneId' => 'scene-a', 'panorama' => 'images/a.jpg', 'hotspots' => [[
+            'scene' => ['sceneId' => 'scene-a', 'panorama' => 'images/a.jpg', 'northOffset' => 45, 'hotspots' => [[
                 'hotspot' => ['yaw' => 1, 'pitch' => 2, 'type' => 'scene', 'sceneId' => 'scene-b', 'targetYaw' => 10]
             ]]]
         ], [
@@ -101,6 +101,9 @@ namespace {
         ], ['scene' => ['sceneId' => 'scene-a', 'panorama' => 'images/duplicate.jpg']]],
     ]));
     expect($tour['config']['default']['firstScene'] === 'scene-b', 'Explicit valid firstScene was not retained.');
+    expect($tour['config']['default']['autoRotate'] === 2.0 && $tour['config']['default']['sceneFadeDuration'] === 300.0, 'Global tour defaults missing.');
+    expect(!isset($tour['config']['scenes']['scene-a']['autoRotate']), 'Global controls leaked into a scene.');
+    expect($tour['config']['scenes']['scene-a']['northOffset'] === 45.0, 'Scene northOffset was not retained.');
     expect(count($tour['config']['scenes']) === 2, 'Duplicate scene IDs were not rejected.');
     expect($tour['config']['scenes']['scene-a']['hotSpots'][0]['sceneId'] === 'scene-b', 'Valid scene target missing.');
     expect(!isset($tour['config']['scenes']['scene-b']['hotSpots']), 'Invalid scene target was not skipped.');

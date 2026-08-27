@@ -11,9 +11,9 @@
 
 ## Backend tabs and visibility
 
-- [ ] Replace extension fieldset labels with translated Panorama & Display, Hotspots & Scenes, and Multi-Scene Tour labels.
-- [ ] Remove the Advanced Mockup placeholder and obsolete setup-level presentation.
-- [ ] Apply conservative `showon` visibility so single-only and tour-only fields are hidden without deleting stored values.
+- [x] Replace extension fieldset labels with translated Panorama & Display, Hotspots & Scenes, and Multi-Scene Tour labels.
+- [x] Remove the Advanced Mockup placeholder and obsolete setup-level presentation.
+- [x] Apply conservative `showon` visibility so single-only and tour-only fields are hidden without deleting stored values.
 
 ## Translations
 
@@ -25,9 +25,9 @@
 
 ## Tour settings
 
-- [ ] Group global auto-rotation, interaction, compass, and scene-transition controls in the tour UI without duplicating them per scene.
-- [ ] Add scene-specific north offset only if implemented and validated as a Pannellum scene override.
-- [ ] Extend PHP regression coverage for default inheritance and backward-compatible single mode.
+- [x] Group global auto-rotation, interaction, compass, and scene-transition controls in the tour UI without duplicating them per scene.
+- [x] Add scene-specific north offset only if implemented and validated as a Pannellum scene override.
+- [x] Extend PHP regression coverage for default inheritance and backward-compatible single mode.
 
 ## Visual hotspot placement
 

@@ -8,6 +8,7 @@
       <field name="yaw" type="number" filter="float" min="-180" max="180" label="MOD_R3D_PAN_SCENE_YAW_LABEL" />
       <field name="pitch" type="number" filter="float" min="-90" max="90" label="MOD_R3D_PAN_SCENE_PITCH_LABEL" />
       <field name="hfov" type="number" filter="float" min="1" max="180" label="MOD_R3D_PAN_SCENE_HFOV_LABEL" />
+	  <field name="northOffset" type="number" filter="float" min="-360" max="360" label="MOD_R3D_PAN_SCENE_NORTH_OFFSET_LABEL" description="MOD_R3D_PAN_SCENE_NORTH_OFFSET_DESC" />
       <field name="hotspots" type="subform" formsource="modules/mod_r3d_pannellum/forms/hotspot.xml" label="MOD_R3D_PAN_SCENE_HOTSPOTS_LABEL" multiple="true" layout="joomla.form.field.subform.repeatable" buttons="add,remove,drag" min="0" max="50" />
     </fieldset>
   </fields>

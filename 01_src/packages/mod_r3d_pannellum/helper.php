@@ -80,6 +80,8 @@ class ModR3dPannellumHelper
                 $value = self::normalizeNumber($row[$name] ?? null, $bounds[0], $bounds[1]);
                 if ($value !== null) { $scene[$name] = $value; }
             }
+            $northOffset = self::normalizeNumber($row['northOffset'] ?? null, -360, 360);
+            if ($northOffset !== null) { $scene['northOffset'] = $northOffset; }
             $hotspots = self::normalizeHotspots($row['hotspots'] ?? [], $ids);
             if ($hotspots !== []) { $scene['hotSpots'] = $hotspots; }
             $scenes[$sceneId] = $scene;
