@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension type="plugin" group="system" method="upgrade">
 	<name>PLG_SYSTEM_R3D_ADMINUI</name>
-	<version>5.3.1</version>
+	<version>5.3.2</version>
 	<creationDate>2026-08-27</creationDate>
 	<author>Richard Dvorak, r3d.de</author>
 	<authorEmail>dev@r3d.de</authorEmail>
@@ -23,3 +23,4 @@
 		<language tag="de-DE">language/de-DE/de-DE.plg_system_r3d_adminui.sys.ini</language>
 	</languages>
 </extension>
+

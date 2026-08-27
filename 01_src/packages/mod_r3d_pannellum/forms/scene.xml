@@ -2,13 +2,13 @@
 <form>
   <fields name="scene">
     <fieldset name="row">
-      <field name="sceneId" type="text" required="true" label="Scene ID" description="Unique letters, numbers, underscores, and hyphens only." />
-      <field name="panorama" type="media" required="true" label="Panorama" />
-      <field name="title" type="text" label="Title" />
+      <field name="sceneId" type="text" required="true" label="MOD_R3D_PAN_SCENE_ID_LABEL" description="MOD_R3D_PAN_SCENE_ID_DESC" />
+      <field name="panorama" type="media" required="true" label="MOD_R3D_PAN_SCENE_PANORAMA_LABEL" />
+      <field name="title" type="text" label="MOD_R3D_PAN_SCENE_TITLE_LABEL" />
       <field name="yaw" type="number" filter="float" min="-180" max="180" label="Initial yaw" />
       <field name="pitch" type="number" filter="float" min="-90" max="90" label="Initial pitch" />
       <field name="hfov" type="number" filter="float" min="1" max="180" label="Initial horizontal FOV" />
-      <field name="hotspots" type="subform" formsource="modules/mod_r3d_pannellum/forms/hotspot.xml" label="Scene hotspots" multiple="true" layout="joomla.form.field.subform.repeatable" buttons="add,remove,drag" min="0" max="50" />
+      <field name="hotspots" type="subform" formsource="modules/mod_r3d_pannellum/forms/hotspot.xml" label="MOD_R3D_PAN_SCENE_HOTSPOTS_LABEL" multiple="true" layout="joomla.form.field.subform.repeatable" buttons="add,remove,drag" min="0" max="50" />
     </fieldset>
   </fields>
 </form>
