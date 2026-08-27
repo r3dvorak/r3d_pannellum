@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension type="module" client="site" method="upgrade">
 	<name>MOD_R3D_PANNELLUM</name>
-	<version>5.3.4</version>
+	<version>5.3.5</version>
 	<creationDate>2026-08-27</creationDate>
 	<author>Richard Dvorak, r3d.de</author>
 	<authorEmail>dev@r3d.de</authorEmail>
@@ -36,21 +36,6 @@
 					<option value="single">MOD_R3D_PAN_VIEWER_MODE_SINGLE</option>
 					<option value="tour">MOD_R3D_PAN_VIEWER_MODE_TOUR</option>
 				</field>
-				<field
-                    name="setup_note"
-                    type="note"
-                    label="MOD_R3D_PAN_NOTE_SETUP_TITLE"
-                    description="MOD_R3D_PAN_NOTE_SETUP_DESC" />
-				<field
-                    name="setup_level"
-                    type="list"
-                    default="basic"
-                    label="MOD_R3D_PAN_SETUP_LEVEL_LABEL"
-                    description="MOD_R3D_PAN_SETUP_LEVEL_DESC">
-					<option value="basic">MOD_R3D_PAN_SETUP_BASIC</option>
-					<option value="intermediate">MOD_R3D_PAN_SETUP_INTERMEDIATE</option>
-					<option value="advanced">MOD_R3D_PAN_SETUP_ADVANCED</option>
-				</field>
 				<!-- Viewer container size -->
 				<field
                     name="container_width"
@@ -72,7 +57,8 @@
                     type="media"
                     label="MOD_R3D_PAN_PANORAMA_LABEL"
                     description="MOD_R3D_PAN_PANORAMA_DESC"
-                    default="media/mod_r3d_pannellum/demo.jpg" />
+					default="media/mod_r3d_pannellum/demo.jpg"
+					showon="viewer_mode:single" />
 				<field
                     name="autoload"
                     type="radio"
@@ -82,12 +68,12 @@
 					<option value="1">MOD_R3D_PAN_OPTION_YES</option>
 					<option value="0">MOD_R3D_PAN_OPTION_NO</option>
 				</field>
-				<field name="sp_init" type="spacer" label="MOD_R3D_PAN_INIT_LABEL" description="MOD_R3D_PAN_INIT_DESC" />
-				<field name="yaw"   type="number" label="MOD_R3D_PAN_YAW_LABEL"   description="MOD_R3D_PAN_YAW_DESC"   hint="MOD_R3D_PAN_YAW_HINT"   filter="float" min="-180" max="180" step="1" />
-				<field name="pitch" type="number" label="MOD_R3D_PAN_PITCH_LABEL" description="MOD_R3D_PAN_PITCH_DESC" hint="MOD_R3D_PAN_PITCH_HINT" filter="float" min="-90"  max="90"  step="1" />
-				<field name="hfov"  type="number" label="MOD_R3D_PAN_HFOV_LABEL"  description="MOD_R3D_PAN_HFOV_DESC"  hint="MOD_R3D_PAN_HFOV_HINT"  filter="float" min="40"   max="120" step="1" />
-				<field name="min_hfov" type="number" label="MOD_R3D_PAN_MINHFOV_LABEL" description="MOD_R3D_PAN_MINHFOV_DESC" hint="MOD_R3D_PAN_MINHFOV_HINT" filter="float" min="40"  max="160" step="1" />
-				<field name="max_hfov" type="number" label="MOD_R3D_PAN_MAXHFOV_LABEL" description="MOD_R3D_PAN_MAXHFOV_DESC" hint="MOD_R3D_PAN_MAXHFOV_HINT" filter="float" min="60"  max="170" step="1" />
+				<field name="sp_init" type="spacer" label="MOD_R3D_PAN_INIT_LABEL" description="MOD_R3D_PAN_INIT_DESC" showon="viewer_mode:single" />
+				<field name="yaw" type="number" label="MOD_R3D_PAN_YAW_LABEL" description="MOD_R3D_PAN_YAW_DESC" hint="MOD_R3D_PAN_YAW_HINT" filter="float" min="-180" max="180" step="1" showon="viewer_mode:single" />
+				<field name="pitch" type="number" label="MOD_R3D_PAN_PITCH_LABEL" description="MOD_R3D_PAN_PITCH_DESC" hint="MOD_R3D_PAN_PITCH_HINT" filter="float" min="-90" max="90" step="1" showon="viewer_mode:single" />
+				<field name="hfov" type="number" label="MOD_R3D_PAN_HFOV_LABEL" description="MOD_R3D_PAN_HFOV_DESC" hint="MOD_R3D_PAN_HFOV_HINT" filter="float" min="40" max="120" step="1" showon="viewer_mode:single" />
+				<field name="min_hfov" type="number" label="MOD_R3D_PAN_MINHFOV_LABEL" description="MOD_R3D_PAN_MINHFOV_DESC" hint="MOD_R3D_PAN_MINHFOV_HINT" filter="float" min="40" max="160" step="1" showon="viewer_mode:single" />
+				<field name="max_hfov" type="number" label="MOD_R3D_PAN_MAXHFOV_LABEL" description="MOD_R3D_PAN_MAXHFOV_DESC" hint="MOD_R3D_PAN_MAXHFOV_HINT" filter="float" min="60" max="170" step="1" showon="viewer_mode:single" />
 				<field name="sp_rotate" type="spacer" label="MOD_R3D_PAN_AR_LABEL" description="MOD_R3D_PAN_AR_DESC" />
 				<field name="auto_rotate" type="number" label="MOD_R3D_PAN_AR_SPEED_LABEL" description="MOD_R3D_PAN_AR_SPEED_DESC" filter="float" default="0" />
 				<field name="auto_rotate_inactivity" type="number" label="MOD_R3D_PAN_AR_INACT_LABEL" description="MOD_R3D_PAN_AR_INACT_DESC" filter="integer" default="0" />
@@ -147,7 +133,8 @@
                     layout="joomla.form.field.subform.repeatable"
                     buttons="add,remove,drag"
                     min="0"
-                    max="50" 
+                    max="50"
+					showon="viewer_mode:single"
                 />
 				<field name="first_scene" type="text" label="MOD_R3D_PAN_FIRST_SCENE_LABEL" description="MOD_R3D_PAN_FIRST_SCENE_DESC" showon="viewer_mode:tour" />
 				<field name="scene_fade_duration" type="number" filter="integer" min="0" max="60000" label="MOD_R3D_PAN_SCENE_FADE_LABEL" showon="viewer_mode:tour" />
@@ -157,6 +144,7 @@
 		</fields>
 	</config>
 </extension>
+
 
 
 

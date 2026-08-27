@@ -2,7 +2,7 @@
 <extension type="package" method="upgrade">
 	<name>R3D Pannellum Viewer</name>
 	<packagename>r3d_pannellum</packagename>
-	<version>5.3.4</version>
+	<version>5.3.5</version>
 	<creationDate>2026-08-27</creationDate>
 	<author>Richard Dvorak, r3d.de</author>
 	<authorEmail>dev@r3d.de</authorEmail>
@@ -36,6 +36,7 @@
 		</server>
 	</updateservers>
 </extension>
+
 
 
 
