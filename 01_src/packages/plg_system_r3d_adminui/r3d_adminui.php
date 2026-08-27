@@ -59,6 +59,11 @@ final class PlgSystemR3d_adminui extends CMSPlugin
             return;
         }
 
+        // Module language files live below the site module path. Explicitly load
+        // that domain for the administrator edit form on Joomla 4.4, 5 and 6.
+        // Without this, form XML constants can fall back to their raw keys.
+        $this->app->getLanguage()->load('mod_r3d_pannellum', JPATH_SITE, null, true, true);
+
         $document = $this->app->getDocument();
         $document->getWebAssetManager()->registerAndUseScript(
             'plg_system_r3d_adminui.admin',
