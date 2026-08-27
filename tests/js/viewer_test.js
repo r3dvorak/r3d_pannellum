@@ -70,3 +70,13 @@ const adminSource = fs.readFileSync(adminPath, 'utf8');
 if (/attributes\s*:\s*true/.test(adminSource)) {
     throw new Error('Admin MutationObserver still watches its own style mutations.');
 }
+
+const pickerPath = path.join(__dirname, '..', '..', '01_src', 'packages', 'plg_system_r3d_adminui', 'media', 'picker.js');
+const pickerSource = fs.readFileSync(pickerPath, 'utf8');
+for (const required of ['function safeUrl', 'function panoramaFor', 'mouseEventToCoords', "['input','change']", "[name=\"jform[params][panorama]\"]"]) {
+    if (!pickerSource.includes(required)) throw new Error(`Picker implementation missing ${required}.`);
+}
+if (/innerHTML/.test(pickerSource) || /javascript:\/i/.test(pickerSource.replace('/^javascript:/i', ''))) {
+    throw new Error('Picker contains unsafe HTML or URL handling.');
+}
+console.log('JavaScript picker regression checks: OK');

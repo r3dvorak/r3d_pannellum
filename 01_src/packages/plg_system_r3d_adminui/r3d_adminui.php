@@ -13,6 +13,7 @@
 defined('_JEXEC') or die;
 
 use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\Plugin\CMSPlugin;
 use Joomla\Database\DatabaseInterface;
 
@@ -65,11 +66,22 @@ final class PlgSystemR3d_adminui extends CMSPlugin
         $this->app->getLanguage()->load('mod_r3d_pannellum', JPATH_SITE, null, true, true);
 
         $document = $this->app->getDocument();
-        $document->getWebAssetManager()->registerAndUseScript(
+		$document->addScriptOptions('mod_r3d_pannellum.picker', [
+			'title' => Text::_('MOD_R3D_PAN_PICKER_TITLE'), 'help' => Text::_('MOD_R3D_PAN_PICKER_HELP'),
+			'apply' => Text::_('MOD_R3D_PAN_PICKER_APPLY'), 'cancel' => Text::_('MOD_R3D_PAN_PICKER_CANCEL'),
+			'invalid' => Text::_('MOD_R3D_PAN_PICKER_INVALID'), 'missing' => Text::_('MOD_R3D_PAN_PICKER_MISSING'),
+			'yaw' => Text::_('MOD_R3D_PAN_PICKER_YAW'), 'pitch' => Text::_('MOD_R3D_PAN_PICKER_PITCH'),
+		]);
+		$wa = $document->getWebAssetManager();
+		$wa->registerAndUseStyle('plg_system_r3d_adminui.picker', 'media/plg_system_r3d_adminui/picker.css', ['version' => '5.3.7', 'relative' => true]);
+		$wa->registerAndUseStyle('plg_system_r3d_adminui.pannellum', 'media/mod_r3d_pannellum/pannellum/pannellum.css', ['version' => '2.5.7', 'relative' => true]);
+		$wa->registerAndUseScript('plg_system_r3d_adminui.pannellum', 'media/mod_r3d_pannellum/pannellum/pannellum.js', ['version' => '2.5.7', 'relative' => true], ['defer' => true]);
+		$wa->registerAndUseScript(
             'plg_system_r3d_adminui.admin',
             'media/plg_system_r3d_adminui/adminui.js',
             ['version' => '5.3.0', 'relative' => true],
-            ['defer' => true]
+			['defer' => true], ['plg_system_r3d_adminui.pannellum']
         );
+		$wa->registerAndUseScript('plg_system_r3d_adminui.picker', 'media/plg_system_r3d_adminui/picker.js', ['version' => '5.3.7', 'relative' => true], ['defer' => true], ['plg_system_r3d_adminui.pannellum']);
     }
 }

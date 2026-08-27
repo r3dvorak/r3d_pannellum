@@ -2,6 +2,7 @@
 <form>
   <fields name="hotspot">
     <fieldset name="row">
+	  <field name="visualPicker" type="button" label="MOD_R3D_PAN_PICKER_BUTTON" class="btn btn-secondary r3d-pan-picker-button" />
       <field name="type" type="list" default="info"
              label="MOD_R3D_PAN_HOTSPOT_TYPE_LABEL"
              description="MOD_R3D_PAN_HOTSPOT_TYPE_DESC">
