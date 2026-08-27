@@ -70,7 +70,7 @@ const adminSource = fs.readFileSync(adminPath, 'utf8');
 if (/attributes\s*:\s*true/.test(adminSource)) {
     throw new Error('Admin MutationObserver still watches its own style mutations.');
 }
-for (const required of ['function getViewerModeSelect', 'function toggleModeTabs', "select.value === 'tour'", 'singleHotspots', 'var tour']) {
+for (const required of ['function getViewerModeSelect', 'function toggleModeTabs', 'function renameGlobalTab', "select.value === 'tour'", 'singleHotspots', 'var tour', 'mod_r3d_pannellum.adminui', 'labels.globalTab']) {
     if (!adminSource.includes(required)) throw new Error(`Mode-aware tab visibility is missing ${required}.`);
 }
 if (adminSource.includes('jform[params][setup_level]')) {

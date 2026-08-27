@@ -48,9 +48,24 @@ if (-not $tourFieldset) { throw 'The dedicated tour fieldset is missing.' }
 if ($moduleXml.SelectSingleNode('/extension/config/fields[@name="params"]/fieldset[@name="advanced"]')) {
     throw 'The module form must not use Joomla reserved fieldset name "advanced" for tour settings.'
 }
-foreach ($fieldName in @('first_scene', 'scene_fade_duration', 'scenes')) {
+foreach ($fieldName in @('first_scene', 'scenes')) {
     if (-not $tourFieldset.SelectSingleNode("field[@name='$fieldName']")) {
         throw "Tour field '$fieldName' is not in the dedicated tour fieldset."
+    }
+}
+
+$basicFieldset = $moduleXml.SelectSingleNode('/extension/config/fields[@name="params"]/fieldset[@name="basic"]')
+if (-not $basicFieldset) { throw 'The global viewer settings fieldset is missing.' }
+if (-not $basicFieldset.SelectSingleNode('field[@name="scene_fade_duration"]')) {
+    throw 'Global scene transition duration must remain in the global viewer settings.'
+}
+if ($tourFieldset.SelectSingleNode('field[@name="scene_fade_duration"]')) {
+    throw 'Scene transition duration must not be duplicated in the tour structure tab.'
+}
+foreach ($fieldName in @('yaw', 'pitch', 'hfov', 'min_hfov', 'max_hfov')) {
+    $field = $basicFieldset.SelectSingleNode("field[@name='$fieldName']")
+    if (-not $field -or $field.GetAttribute('showon')) {
+        throw "Global default field '$fieldName' must be visible in both viewer modes."
     }
 }
 

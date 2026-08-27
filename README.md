@@ -21,13 +21,16 @@ uses its target `sceneId` and may specify `targetYaw`, `targetPitch`, and
 
 ## Module Editor
 
-The module editor adapts to the selected viewer mode. **Panorama & Display**
-contains the viewer mode, container, panorama, and shared viewer controls. In
-**Single Panorama** mode, **Single panorama hotspots** contains the root-level
-hotspots. In **Multi-scene tour** mode, **Multi-Scene Tour** contains the
-first scene, transition duration, repeatable tour scenes, and each scene's
-hotspots. The inactive mode's tab is hidden; switching modes preserves its
-stored values.
+The module editor adapts to the selected viewer mode. **Global viewer
+settings** is always visible and contains the mode, container, interaction,
+compass, auto-rotation, default view, and tour transition settings. Those
+values are Pannellum defaults inherited by scenes unless a scene supplies its
+own initial view or North offset. In **Single Panorama** mode, the global
+page also shows the single panorama; **Single panorama hotspots** contains its
+root-level hotspots. In **Multi-scene tour** mode, the single panorama and its
+hotspot tab are hidden. **Multi-Scene Tour** contains the first scene,
+repeatable tour scenes, and each scene's hotspots. Switching modes preserves
+the inactive mode's stored values.
 
 Each hotspot row includes **Place visually**. It opens a local Pannellum
 preview of the root panorama in single mode or of the enclosing scene panorama

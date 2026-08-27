@@ -43,6 +43,16 @@
         }) || null;
     }
 
+    function renameGlobalTab(controls) {
+        var labels = (window.Joomla && Joomla.getOptions('mod_r3d_pannellum.adminui')) || {};
+        var global = controls.find(function (control) {
+            return /(^|-)basic$/.test(control.targetId);
+        });
+        if (global && labels.globalTab && global.element.textContent !== labels.globalTab) {
+            global.element.textContent = labels.globalTab;
+        }
+    }
+
     function setDisplay(element, value) {
         if (element && element.style.display !== value) {
             element.style.display = value;
@@ -55,6 +65,8 @@
         if (!select || !controls.length) {
             return;
         }
+
+        renameGlobalTab(controls);
 
         controls.forEach(function (control) {
             var singleHotspots = /(^|-)intermediate$/.test(control.targetId);
