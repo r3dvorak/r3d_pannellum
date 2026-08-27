@@ -56,19 +56,25 @@
         state.pitch = null;
     }
 
-    function apply() {
-        if (state.row && state.yaw !== null && state.pitch !== null) {
-            ['yaw', 'pitch'].forEach(function (name) {
-                var field = hotspotInput(state.row, name);
+    function writeCoordinates(row, yaw, pitch) {
+        if (!row || yaw === null || pitch === null) {
+            return false;
+        }
+        ['yaw', 'pitch'].forEach(function (name) {
+                var field = hotspotInput(row, name);
                 if (!field) {
                     return;
                 }
-                field.value = name === 'yaw' ? state.yaw : state.pitch;
+                field.value = name === 'yaw' ? yaw : pitch;
                 ['input','change'].forEach(function (type) {
                     field.dispatchEvent(new Event(type, { bubbles: true }));
                 });
-            });
-        }
+        });
+        return true;
+    }
+
+    function apply() {
+        writeCoordinates(state.row, state.yaw, state.pitch);
         close();
     }
 
@@ -176,6 +182,7 @@
         safeUrl: safeUrl,
         panoramaFor: panoramaFor,
         formatCoordinate: formatCoordinate,
+        writeCoordinates: writeCoordinates,
         apply: apply,
         close: close
     };

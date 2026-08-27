@@ -90,10 +90,29 @@ const pickerContext = {
 };
 pickerContext.window.window = pickerContext.window;
 vm.runInNewContext(pickerSource, pickerContext, { filename: pickerPath });
-if (pickerContext.window.R3dPannellumPicker.safeUrl('javascript:alert(1)') !== null) throw new Error('Unsafe picker URL accepted.');
+const picker = pickerContext.window.R3dPannellumPicker;
+for (const unsafeUrl of ['javascript:alert(1)', 'data:text/html,unsafe', '//evil.test/x', 'bad\nurl']) {
+    if (picker.safeUrl(unsafeUrl) !== null) throw new Error(`Unsafe picker URL accepted: ${unsafeUrl}`);
+}
+if (picker.safeUrl('images/panorama.jpg') !== 'https://site.test/images/panorama.jpg') throw new Error('Relative picker URL was not resolved.');
 const sceneB = { value: 'scene-b.jpg' };
 const sceneRow = { querySelector() { return sceneB; }, parentElement: null };
-if (pickerContext.window.R3dPannellumPicker.panoramaFor(sceneRow) !== sceneB) throw new Error('Scene-b panorama was not resolved.');
+if (picker.panoramaFor(sceneRow) !== sceneB) throw new Error('Scene-b panorama was not resolved.');
 const rootRow = { querySelector() { return null; }, parentElement: null };
-if (pickerContext.window.R3dPannellumPicker.panoramaFor(rootRow).value !== 'global.jpg') throw new Error('Root panorama was not resolved.');
-console.log('JavaScript picker root/scene resolution tests: OK');
+if (picker.panoramaFor(rootRow).value !== 'global.jpg') throw new Error('Root panorama was not resolved.');
+const dynamicScenePanorama = { value: 'dynamic-scene.jpg' };
+const dynamicSceneRow = { querySelector() { return dynamicScenePanorama; }, parentElement: null };
+const dynamicHotspotRow = { querySelector() { return null; }, parentElement: dynamicSceneRow };
+if (picker.panoramaFor(dynamicHotspotRow) !== dynamicScenePanorama) throw new Error('Dynamic scene row was not resolved.');
+
+const events = [];
+const yaw = { value: '1', dispatchEvent(event) { events.push(`yaw:${event.type}`); } };
+const pitch = { value: '2', dispatchEvent(event) { events.push(`pitch:${event.type}`); } };
+const writebackRow = {
+    querySelector(selector) { return selector.includes('[yaw]') ? yaw : pitch; }
+};
+if (!picker.writeCoordinates(writebackRow, '12.345678', '-6.500001')) throw new Error('Picker writeback failed.');
+if (yaw.value !== '12.345678' || pitch.value !== '-6.500001') throw new Error('Picker lost decimal coordinates.');
+if (events.join(',') !== 'yaw:input,yaw:change,pitch:input,pitch:change') throw new Error('Picker writeback events are incomplete.');
+if (picker.writeCoordinates(null, '1', '2') !== false || yaw.value !== '12.345678') throw new Error('Picker cancellation guard changed fields.');
+console.log('JavaScript picker resolution, safety, and writeback tests: OK');

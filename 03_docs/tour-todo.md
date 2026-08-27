@@ -41,8 +41,8 @@
 
 - [x] Add an explicit regression test that a scene-b hotspot picker resolves scene-b panorama, never global or sibling-scene panorama.
 - [x] Add an explicit regression test that a root single-mode hotspot picker resolves the global single panorama.
-- [ ] Add JavaScript tests for row/panorama resolution, writeback, cancellation, delegated dynamic rows, and safe preview handling.
-- [ ] Run PHP lint/tests, JavaScript syntax/tests, XML/JSON checks, PowerShell parser/tests, isolated deterministic build, archive validation, and `git diff --check`.
+- [x] Add JavaScript tests for row/panorama resolution, writeback, cancellation, delegated dynamic rows, and safe preview handling.
+- [x] Run PHP lint/tests, JavaScript syntax/tests, XML/JSON checks, PowerShell parser/tests, isolated deterministic build, archive validation, and `git diff --check`.
 
 ## Documentation
 

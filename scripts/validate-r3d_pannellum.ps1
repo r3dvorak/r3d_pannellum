@@ -105,6 +105,8 @@ try {
     Assert-Equal 'Nested plugin manifest version' $pluginVersion (Get-NestedManifestVersion $archive 'plg_system_r3d_adminui.zip' 'r3d_adminui.xml')
     Assert-NestedEntry $archive 'mod_r3d_pannellum.zip' 'media/viewer.js'
     Assert-NestedEntry $archive 'plg_system_r3d_adminui.zip' 'media/adminui.js'
+    Assert-NestedEntry $archive 'plg_system_r3d_adminui.zip' 'media/picker.js'
+    Assert-NestedEntry $archive 'plg_system_r3d_adminui.zip' 'media/picker.css'
     foreach ($required in @(
         'language/en-GB/pkg_r3d_pannellum.sys.ini',
         'language/de-DE/pkg_r3d_pannellum.sys.ini',

@@ -78,7 +78,7 @@ function Update-TextFile {
         Fail "No replacement applied in $Path"
     }
 
-    Set-Content -LiteralPath $Path -Value $updated
+    [System.IO.File]::WriteAllText($Path, $updated.TrimEnd("`r", "`n") + [Environment]::NewLine)
 }
 
 $projectRoot = (Resolve-Path -LiteralPath $ProjectRoot).Path
