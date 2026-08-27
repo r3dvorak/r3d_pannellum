@@ -16,6 +16,8 @@
         }
         return document.querySelector('[name="jform[params][panorama]"]');
     }
+
+    window.R3dPannellumPicker = { safeUrl: safeUrl, panoramaFor: panoramaFor };
     function status(message) { state.modal.querySelector('[data-r3d-coords]').textContent = message || ''; }
     function close() { if (state.viewer) { state.viewer.destroy(); } state.viewer = null; state.modal.hidden = true; state.row = null; }
     function makeModal() {

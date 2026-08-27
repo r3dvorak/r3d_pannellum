@@ -80,3 +80,20 @@ if (/innerHTML/.test(pickerSource) || /javascript:\/i/.test(pickerSource.replace
     throw new Error('Picker contains unsafe HTML or URL handling.');
 }
 console.log('JavaScript picker regression checks: OK');
+
+// Picker helpers are deliberately exposed only for repository-local regression checks.
+const pickerContext = {
+    window: { location: { origin: 'https://site.test' }, Joomla: { getOptions() { return {}; } } },
+    document: { addEventListener() {}, querySelector() { return { value: 'global.jpg' }; }, createElement() { return {}; }, body: { appendChild() {} } },
+    URL,
+    Event
+};
+pickerContext.window.window = pickerContext.window;
+vm.runInNewContext(pickerSource, pickerContext, { filename: pickerPath });
+if (pickerContext.window.R3dPannellumPicker.safeUrl('javascript:alert(1)') !== null) throw new Error('Unsafe picker URL accepted.');
+const sceneB = { value: 'scene-b.jpg' };
+const sceneRow = { querySelector() { return sceneB; }, parentElement: null };
+if (pickerContext.window.R3dPannellumPicker.panoramaFor(sceneRow) !== sceneB) throw new Error('Scene-b panorama was not resolved.');
+const rootRow = { querySelector() { return null; }, parentElement: null };
+if (pickerContext.window.R3dPannellumPicker.panoramaFor(rootRow).value !== 'global.jpg') throw new Error('Root panorama was not resolved.');
+console.log('JavaScript picker root/scene resolution tests: OK');
