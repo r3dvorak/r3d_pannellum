@@ -62,6 +62,14 @@ is available only inside a tour scene, where it can target another valid tour
 scene. Text is displayed as the hover tooltip for Info, Link, and Scene
 hotspots.
 
+## Recent editor improvements
+
+- **5.3.23:** The visual picker is a localized Joomla administrator button,
+  rather than an empty-looking input control.
+- **5.3.24:** Hotspot rows place **Type** before the picker button, followed by
+  yaw and pitch, so the action is encountered in the natural editing order.
+- **5.3.25:** Scene hotspot text is retained and appears as its hover tooltip.
+
 The administrator integration supports both Joomla's core module editor and
 Regular Labs Advanced Module Manager. After installing an updated package,
 reload an open module edit page so its current administrator assets are used.

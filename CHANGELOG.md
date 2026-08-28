@@ -6,9 +6,20 @@
   Pannellum icons; custom CSS hotspot classes remain untouched.
 - Disabled automatic view reset after interaction by default. It is now an
   explicit configurable auto-rotation option with a delay.
-- Corrected Scene hotspot hover text and refined the hotspot editor order:
-  type, visual position button, yaw, pitch, then type-specific fields.
-- Replaced the empty-looking visual picker control with a localized Joomla
+
+## [5.3.25] - Unreleased
+
+- Corrected Scene hotspot hover text so it is passed to Pannellum and shown
+  consistently alongside Info and Link hotspot tooltips.
+
+## [5.3.24] - Unreleased
+
+- Refined the hotspot editor order: type, visual position button, yaw, pitch,
+  then type-specific fields.
+
+## [5.3.23] - Unreleased
+
+- Replaced the empty-looking visual picker form control with a localized Joomla
   administrator button.
 
 ## [5.3.22] - Unreleased
