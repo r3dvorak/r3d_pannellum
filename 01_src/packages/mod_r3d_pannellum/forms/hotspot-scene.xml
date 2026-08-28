@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+  <fields name="hotspot">
+    <fieldset name="row">
+	  <field name="visualPicker" type="button" label="MOD_R3D_PAN_PICKER_BUTTON" class="btn btn-secondary r3d-pan-picker-button" />
+      <field name="type" type="list" default="info"
+             label="MOD_R3D_PAN_HOTSPOT_TYPE_LABEL"
+             description="MOD_R3D_PAN_HOTSPOT_TYPE_DESC">
+        <option value="info">MOD_R3D_PAN_HOTSPOT_TYPE_INFO</option>
+        <option value="link">MOD_R3D_PAN_HOTSPOT_TYPE_LINK</option>
+        <option value="scene">MOD_R3D_PAN_HOTSPOT_TYPE_SCENE</option>
+      </field>
+
+      <field name="yaw" type="number" filter="float" label="MOD_R3D_PAN_HOTSPOT_YAW_LABEL" description="MOD_R3D_PAN_HOTSPOT_YAW_DESC" hint="MOD_R3D_PAN_DEG_HINT" />
+      <field name="pitch" type="number" filter="float" label="MOD_R3D_PAN_HOTSPOT_PITCH_LABEL" description="MOD_R3D_PAN_HOTSPOT_PITCH_DESC" hint="MOD_R3D_PAN_DEG_HINT" />
+      <field name="text" type="text" label="MOD_R3D_PAN_HOTSPOT_TEXT_LABEL" description="MOD_R3D_PAN_HOTSPOT_TEXT_DESC" />
+      <field name="url" type="url" label="MOD_R3D_PAN_HOTSPOT_URL_LABEL" description="MOD_R3D_PAN_HOTSPOT_URL_DESC" showon="type:link,info" />
+      <field name="sceneId" type="text" label="MOD_R3D_PAN_HOTSPOT_SCENEID_LABEL" description="MOD_R3D_PAN_HOTSPOT_SCENEID_DESC" showon="type:scene" />
+      <field name="targetYaw" type="number" filter="float" label="MOD_R3D_PAN_HOTSPOT_TARGET_YAW_LABEL" description="MOD_R3D_PAN_HOTSPOT_TARGET_YAW_DESC" hint="MOD_R3D_PAN_DEG_HINT" showon="type:scene" />
+      <field name="targetPitch" type="number" filter="float" label="MOD_R3D_PAN_HOTSPOT_TARGET_PITCH_LABEL" description="MOD_R3D_PAN_HOTSPOT_TARGET_PITCH_DESC" hint="MOD_R3D_PAN_DEG_HINT" showon="type:scene" />
+      <field name="targetHfov" type="number" filter="float" label="MOD_R3D_PAN_HOTSPOT_TARGET_HFOV_LABEL" description="MOD_R3D_PAN_HOTSPOT_TARGET_HFOV_DESC" hint="MOD_R3D_PAN_HFOV_HINT" showon="type:scene" />
+      <field name="cssClass" type="text" label="MOD_R3D_PAN_HOTSPOT_CSSCLASS_LABEL" description="MOD_R3D_PAN_HOTSPOT_CSSCLASS_DESC" />
+    </fieldset>
+  </fields>
+</form>

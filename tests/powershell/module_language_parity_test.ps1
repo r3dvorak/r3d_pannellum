@@ -16,6 +16,7 @@ $root = (Resolve-Path -LiteralPath $ProjectRoot).Path
 $forms = @(
     (Join-Path $root '01_src\packages\mod_r3d_pannellum\mod_r3d_pannellum.xml'),
     (Join-Path $root '01_src\packages\mod_r3d_pannellum\forms\hotspot.xml'),
+    (Join-Path $root '01_src\packages\mod_r3d_pannellum\forms\hotspot-scene.xml'),
     (Join-Path $root '01_src\packages\mod_r3d_pannellum\forms\scene.xml')
 )
 $en = Get-LanguageKeys (Join-Path $root '01_src\packages\mod_r3d_pannellum\language\en-GB\en-GB.mod_r3d_pannellum.ini')
@@ -44,6 +45,15 @@ foreach ($key in @('MOD_R3D_PAN_TOUR_EMPTY_MESSAGE')) {
     if (-not $en.ContainsKey($key) -or -not $de.ContainsKey($key)) {
         throw "Missing localized tour status key: $key"
     }
+}
+
+$singleHotspotForm = Get-Content -LiteralPath (Join-Path $root '01_src\packages\mod_r3d_pannellum\forms\hotspot.xml') -Raw
+$sceneHotspotForm = Get-Content -LiteralPath (Join-Path $root '01_src\packages\mod_r3d_pannellum\forms\hotspot-scene.xml') -Raw
+if ($singleHotspotForm -match '<option value="scene">') {
+    throw 'Single-panorama hotspots must not offer scene navigation.'
+}
+if ($sceneHotspotForm -notmatch '<option value="scene">') {
+    throw 'Scene hotspots must offer scene navigation.'
 }
 
 $moduleForm = $forms[0]

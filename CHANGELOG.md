@@ -1,5 +1,11 @@
 # Changelog
 
+## [5.3.22] - Unreleased
+
+- Separated root-hotspot and scene-hotspot forms. Single Panorama hotspots now
+  offer only Info and Link; scene navigation is available only inside a tour
+  scene.
+
 ## [5.3.21] - Unreleased
 
 - Removed the unsafe single-panorama fallback for a tour without valid scenes.

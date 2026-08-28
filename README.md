@@ -45,6 +45,9 @@ in tour mode. Click the preview to place a temporary marker, then select
 **Apply** to write decimal yaw and pitch values to that row. **Cancel** closes
 the preview without changing fields. The control uses delegated events, so it
 also works for repeatable rows added, removed, or reordered in the editor.
+Root hotspots in Single Panorama mode offer only Info and Link. The Scene type
+is available only inside a tour scene, where it can target another valid tour
+scene.
 
 The administrator integration supports both Joomla's core module editor and
 Regular Labs Advanced Module Manager. After installing an updated package,
