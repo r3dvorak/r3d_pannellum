@@ -1,5 +1,11 @@
 # Changelog
 
+## [5.3.27] - Unreleased
+
+- Fixed global standard-icon scaling so hotspot centres remain locked to their
+  configured yaw and pitch while the panorama moves. The fix covers Info, Link,
+  and Scene hotspots and repositions them safely after styling.
+
 ## [5.3.26] - Unreleased
 
 - Added global standard hotspot icon scale and opacity settings for built-in
