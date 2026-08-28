@@ -229,7 +229,7 @@ $moduleZip = Join-Path $distRoot ("mod_r3d_pannellum-{0}.zip" -f $moduleVersion)
 $pluginZip = Join-Path $distRoot ("plg_system_r3d_adminui-{0}.zip" -f $pluginVersion)
 $packageZip = Join-Path $distRoot ("pkg_r3d_pannellum-{0}.zip" -f $pkgVersion)
 
-$moduleInventory = Get-VerifiedExtensionInventory -SourceDir $moduleDir -RequiredRoots @('mod_r3d_pannellum.xml','mod_r3d_pannellum.php','helper.php','tmpl','forms','language','media/demo.jpg','media/viewer.js','media/pannellum/pannellum.js','media/pannellum/pannellum.css')
+$moduleInventory = Get-VerifiedExtensionInventory -SourceDir $moduleDir -RequiredRoots @('mod_r3d_pannellum.xml','mod_r3d_pannellum.php','helper.php','fields','tmpl','forms','language','media/demo.jpg','media/viewer.js','media/pannellum/pannellum.js','media/pannellum/pannellum.css')
 $pluginInventory = Get-VerifiedExtensionInventory -SourceDir $pluginDir -RequiredRoots @('r3d_adminui.xml','r3d_adminui.php','language','media/adminui.js','media/picker.js','media/picker.css')
 New-ZipFromInventory -SourceDir $moduleDir -Inventory $moduleInventory -ZipPath $moduleZip -FirstFileName 'mod_r3d_pannellum.xml'
 Log "Built module ZIP: $moduleZip"
