@@ -102,6 +102,7 @@ class ModR3dPannellumHelper
             if ($yaw === null || $pitch === null) { continue; }
             $type = (string) ($row['type'] ?? 'info');
             if (!in_array($type, ['info', 'link', 'scene'], true)) { $type = 'info'; }
+            $text = self::normalizeText($row['text'] ?? '', 500);
             if ($type === 'scene') {
                 $sceneId = self::normalizeIdentifier($row['sceneId'] ?? '');
                 if ($sceneId === '' || !isset($sceneIds[$sceneId])) { continue; }
@@ -112,11 +113,10 @@ class ModR3dPannellumHelper
                 }
             } else {
                 $hotspot = ['yaw' => $yaw, 'pitch' => $pitch, 'type' => 'info'];
-                $text = self::normalizeText($row['text'] ?? '', 500);
                 $url = self::normalizeUrl($row['url'] ?? '');
-                if ($text !== '') { $hotspot['text'] = $text; }
                 if ($url !== '') { $hotspot['URL'] = $url; }
             }
+            if ($text !== '') { $hotspot['text'] = $text; }
             $cssClass = self::normalizeCssClasses($row['cssClass'] ?? '');
             if ($cssClass !== '') { $hotspot['cssClass'] = $cssClass; }
             $hotspots[] = $hotspot;
