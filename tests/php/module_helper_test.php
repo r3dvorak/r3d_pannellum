@@ -97,6 +97,12 @@ namespace {
     expect(!isset($config['hotSpots'][0]['URL']), 'Unsafe URL scheme was accepted.');
     expect($config['hotSpots'][0]['cssClass'] === 'valid also-valid', 'CSS class normalization failed.');
     expect($config['hotSpots'][1]['URL'] === 'https://example.test/info', 'Valid HTTPS URL was removed.');
+    $controlCharacter = ModR3dPannellumHelper::build(new Joomla\Registry\Registry([
+        'panorama' => 'images/a.jpg', 'hotspots' => [[
+            'hotspot' => ['yaw' => 1, 'pitch' => 2, 'text' => 'Unsafe' . chr(7)]
+        ]],
+    ]));
+    expect(!isset($controlCharacter['config']['hotSpots'][0]['text']), 'Control characters must be rejected from hotspot text.');
 
     $tour = ModR3dPannellumHelper::build(new Joomla\Registry\Registry([
         'viewer_mode' => 'tour', 'first_scene' => 'scene-b', 'auto_rotate' => 2, 'show_zoom_ctrl' => '0', 'compass' => '1', 'scene_fade_duration' => 300,

@@ -3,6 +3,9 @@
  * @package     Joomla.Module
  * @subpackage  mod_r3d_pannellum
  * @version     5.3.0
+ * @copyright   Copyright (C) 2025 Richard Dvorak, https://r3d.de
+ * @license     GNU General Public License version 3 or later; see LICENSE.txt
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 defined('_JEXEC') || die;
@@ -170,7 +173,7 @@ class ModR3dPannellumHelper
     private static function normalizeText($value, int $maximumBytes): string
     {
         $value = (string) $value;
-        return preg_match('/[\x00-\x1F\x7F]/', $value) ? '' : substr(trim($value), 0, $maximumBytes);
+        return preg_match('/[[:cntrl:]]/', $value) ? '' : substr(trim($value), 0, $maximumBytes);
     }
     private static function normalizeUrl($value): string
     {

@@ -1,5 +1,12 @@
 # Changelog
 
+## [5.3.30] - Unreleased
+
+- Added explicit GPL-3.0-or-later notices to module PHP headers required by
+  the JED checker.
+- Replaced a JAMSS false-positive control-character expression with its
+  equivalent POSIX character class and added a regression test.
+
 ## [5.3.29] - Unreleased
 
 - Added a localized SVG Reset view control below Pannellum's zoom controls when

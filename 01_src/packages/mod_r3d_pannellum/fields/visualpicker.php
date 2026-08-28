@@ -2,6 +2,9 @@
 /**
  * @package     Joomla.Module
  * @subpackage  mod_r3d_pannellum
+ * @copyright   Copyright (C) 2025 Richard Dvorak, https://r3d.de
+ * @license     GNU General Public License version 3 or later; see LICENSE.txt
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 defined('_JEXEC') or die;
