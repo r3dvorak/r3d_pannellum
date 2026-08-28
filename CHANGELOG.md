@@ -1,5 +1,11 @@
 # Changelog
 
+## [5.3.28] - Unreleased
+
+- Made view reset after inactivity explicitly require a non-zero auto-rotation
+  speed, so Pannellum reliably restores the configured default view and then
+  resumes the intended rotation instead of enabling a no-op timer.
+
 ## [5.3.27] - Unreleased
 
 - Fixed global standard-icon scaling so hotspot centres remain locked to their

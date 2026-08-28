@@ -42,7 +42,8 @@ single panorama; it displays a configuration message instead.
 The global settings also contain **Reset view after inactivity**. It is off by
 default, so visitor zoom and viewing direction remain unchanged after an
 interaction. Enable it only when a panorama should return to its configured
-starting view after the selected delay and resume auto-rotation.
+starting view after the selected delay and resume auto-rotation. It requires a
+non-zero **Rotate speed**; otherwise there is no rotation to restart.
 
 **Standard hotspot appearance** is also global: **Standard icon scale** uses
 `1` for Pannellum's normal icon size, while **Standard icon opacity** uses `1`

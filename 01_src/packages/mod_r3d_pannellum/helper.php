@@ -51,7 +51,12 @@ class ModR3dPannellumHelper
             $value = self::normalizeNumber($params->get($rule[0], null), $rule[1], $rule[2]);
             if ($value !== null) { $config[$name] = $value; }
         }
-        if (self::normalizeBoolean($params->get('reset_view_after_inactivity', false)) === true) {
+        // Pannellum's inactivity handler performs both actions atomically:
+        // lookAt() restores the configured default view and then resumes the
+        // stored auto-rotation speed. Without a non-zero speed there is no
+        // rotation to restart, so do not enable a misleading reset timer.
+        if (self::normalizeBoolean($params->get('reset_view_after_inactivity', false)) === true
+            && !empty($config['autoRotate'])) {
             $delay = self::normalizeNumber($params->get('auto_rotate_inactivity', null), 0, 86400000);
             if ($delay !== null) { $config['autoRotateInactivityDelay'] = $delay; }
         }
