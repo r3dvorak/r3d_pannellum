@@ -7,8 +7,15 @@
         return Array.prototype.slice.call((root || document).querySelectorAll(selector));
     }
 
-    function getViewerModeSelect() {
-        return document.querySelector('[name="jform[params][viewer_mode]"]');
+    function getViewerModeInputs() {
+        return all('[name="jform[params][viewer_mode]"]');
+    }
+
+    function getViewerModeInput() {
+        var inputs = getViewerModeInputs();
+        return inputs.find(function (input) {
+            return input.checked;
+        }) || inputs[0] || null;
     }
 
     function getMainTab() {
@@ -57,7 +64,7 @@
     }
 
     function renameGlobalTab(controls) {
-        var labels = (window.Joomla && Joomla.getOptions('mod_r3d_pannellum.adminui')) || {};
+        var labels = (window.Joomla && window.Joomla.getOptions('mod_r3d_pannellum.adminui')) || {};
         var global = controls.find(function (control) {
             return /(^|-)(general|basic)$/.test(control.targetId);
         });
@@ -82,13 +89,10 @@
         if (control.pane) {
             control.pane.hidden = !visible;
         }
-        if (control.accordionButton) {
-            control.accordionButton.hidden = !visible;
-        }
     }
 
     function toggleModeTabs() {
-        var select = getViewerModeSelect();
+        var select = getViewerModeInput();
         var controls = getTopTabButtons();
         if (!select) {
             return;
@@ -121,13 +125,15 @@
     }
 
     function boot() {
-        var select = getViewerModeSelect();
-        if (!select || select.hasAttribute('data-r3d-adminui-ready')) {
+        var inputs = getViewerModeInputs();
+        if (!inputs.length || inputs[0].hasAttribute('data-r3d-adminui-ready')) {
             return;
         }
 
-        select.setAttribute('data-r3d-adminui-ready', 'true');
-        select.addEventListener('change', toggleModeTabs);
+        inputs.forEach(function (input) {
+            input.setAttribute('data-r3d-adminui-ready', 'true');
+            input.addEventListener('change', toggleModeTabs);
+        });
         toggleModeTabs();
 
         var mainTab = getMainTab();

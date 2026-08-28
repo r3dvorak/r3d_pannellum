@@ -70,12 +70,73 @@ const adminSource = fs.readFileSync(adminPath, 'utf8');
 if (/attributes\s*:\s*true/.test(adminSource)) {
     throw new Error('Admin MutationObserver still watches its own style mutations.');
 }
-for (const required of ['function getViewerModeSelect', 'function toggleModeTabs', 'function renameGlobalTab', 'function setControlVisible', 'Array.isArray(tab.tabs)', 'item.tabButton', 'tabRetry < 10', "select.value === 'tour'", 'singleHotspots', 'var tour', 'mod_r3d_pannellum.adminui', 'labels.globalTab']) {
+for (const required of ['function getViewerModeInputs', 'function getViewerModeInput', 'input.checked', 'inputs.forEach', 'function toggleModeTabs', 'function renameGlobalTab', 'function setControlVisible', 'Array.isArray(tab.tabs)', 'item.tabButton', 'tabRetry < 10', "select.value === 'tour'", 'singleHotspots', 'var tour', 'mod_r3d_pannellum.adminui', 'labels.globalTab']) {
     if (!adminSource.includes(required)) throw new Error(`Mode-aware tab visibility is missing ${required}.`);
 }
 if (adminSource.includes('jform[params][setup_level]')) {
     throw new Error('Obsolete setup-level tab visibility is still active.');
 }
+
+function adminNode(id = '') {
+    const attributes = new Map();
+    const listeners = new Map();
+    return {
+        id,
+        hidden: false,
+        style: { display: '' },
+        textContent: id,
+        classList: { contains() { return false; } },
+        getAttribute(name) { return attributes.get(name) || null; },
+        setAttribute(name, value) { attributes.set(name, value); },
+        hasAttribute(name) { return attributes.has(name); },
+        addEventListener(name, listener) { listeners.set(name, listener); },
+        emit(name) { listeners.get(name)?.(); }
+    };
+}
+const singleRadio = adminNode();
+singleRadio.value = 'single';
+singleRadio.checked = false;
+const tourRadio = adminNode();
+tourRadio.value = 'tour';
+tourRadio.checked = true;
+const generalPane = adminNode('general');
+const singlePane = adminNode('attrib-intermediate');
+const tourPane = adminNode('attrib-tour');
+const singleButton = adminNode();
+const tourButton = adminNode();
+const tourAccordion = adminNode();
+tourAccordion.hidden = true;
+const adminTab = {
+    tabs: [
+        { tab: generalPane, tabButton: adminNode(), accordionButton: adminNode() },
+        { tab: singlePane, tabButton: singleButton, accordionButton: adminNode() },
+        { tab: tourPane, tabButton: tourButton, accordionButton: tourAccordion }
+    ]
+};
+const adminContext = {
+    window: { Joomla: { getOptions() { return { globalTab: 'Global viewer settings' }; } } },
+    document: {
+        readyState: 'complete',
+        addEventListener() {},
+        querySelector(selector) { return selector === 'joomla-tab#myTab' ? adminTab : null; },
+        querySelectorAll(selector) { return selector.includes('viewer_mode') ? [singleRadio, tourRadio] : []; },
+        getElementById() { return null; }
+    }
+};
+vm.runInNewContext(adminSource, adminContext, { filename: adminPath });
+if (!singlePane.hidden || !singleButton.hidden || tourPane.hidden || tourButton.hidden || !tourAccordion.hidden) {
+    throw new Error('Tour mode did not show only the tour tab or changed Joomla accordion visibility.');
+}
+if (adminTab.tabs[0].tabButton.textContent !== 'Global viewer settings') {
+    throw new Error('Global viewer tab was not renamed.');
+}
+singleRadio.checked = true;
+tourRadio.checked = false;
+singleRadio.emit('change');
+if (singlePane.hidden || singleButton.hidden || !tourPane.hidden || !tourButton.hidden) {
+    throw new Error('Single mode did not show only the single-panorama hotspots tab.');
+}
+console.log('JavaScript admin mode-tab regression checks: OK');
 
 const pickerPath = path.join(__dirname, '..', '..', '01_src', 'packages', 'plg_system_r3d_adminui', 'media', 'picker.js');
 const pickerSource = fs.readFileSync(pickerPath, 'utf8');

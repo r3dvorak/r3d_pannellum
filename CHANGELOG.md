@@ -1,5 +1,14 @@
 # Changelog
 
+## [5.3.20] - Unreleased
+
+- Fixed mode-aware tab selection for Joomla radio inputs: the checked viewer
+  mode is now used, rather than always reading the first radio input.
+- Restored Joomla's native tab/accordion visibility while hiding only the
+  inactive configuration mode.
+- Added executable regression coverage for single and tour tab visibility and
+  fixed safe access to Joomla script options in both administrator scripts.
+
 ## [5.3.19] - Unreleased
 
 - Expanded the administrator workflow documentation for single panoramas and

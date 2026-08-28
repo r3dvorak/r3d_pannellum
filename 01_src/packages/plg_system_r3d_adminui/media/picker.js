@@ -103,7 +103,7 @@
     }
 
     function makeModal() {
-        var labels = (window.Joomla && Joomla.getOptions('mod_r3d_pannellum.picker')) || {};
+        var labels = (window.Joomla && window.Joomla.getOptions('mod_r3d_pannellum.picker')) || {};
         var modal = document.createElement('div');
         var dialog = document.createElement('div');
         var title = document.createElement('h2');
@@ -141,7 +141,7 @@
     function open(button) {
         var row = button.closest('.subform-repeatable-group, .row');
         var panorama = row && panoramaFor(row);
-        var labels = (window.Joomla && Joomla.getOptions('mod_r3d_pannellum.picker')) || {};
+        var labels = (window.Joomla && window.Joomla.getOptions('mod_r3d_pannellum.picker')) || {};
 
         if (!row || !window.pannellum) {
             return;
