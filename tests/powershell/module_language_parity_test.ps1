@@ -40,6 +40,11 @@ foreach ($key in $referenced.Keys) {
     if (-not $en.ContainsKey($key)) { throw "Missing en-GB language key: $key" }
     if (-not $de.ContainsKey($key)) { throw "Missing de-DE language key: $key" }
 }
+foreach ($key in @('MOD_R3D_PAN_TOUR_EMPTY_MESSAGE')) {
+    if (-not $en.ContainsKey($key) -or -not $de.ContainsKey($key)) {
+        throw "Missing localized tour status key: $key"
+    }
+}
 
 $moduleForm = $forms[0]
 [xml]$moduleXml = Get-Content -LiteralPath $moduleForm -Raw

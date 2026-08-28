@@ -36,6 +36,8 @@ The first rendered panorama in a tour is the configured **First tour scene**;
 when that value is empty or invalid, the first valid scene in the list is used.
 The global single-panorama image is deliberately ignored while tour mode is
 active, but remains stored for a later switch back to Single Panorama mode.
+If a tour has no valid scene, the module does not fall back to that stored
+single panorama; it displays a configuration message instead.
 
 Each hotspot row includes **Place visually**. It opens a local Pannellum
 preview of the root panorama in single mode or of the enclosing scene panorama

@@ -1,5 +1,11 @@
 # Changelog
 
+## [5.3.21] - Unreleased
+
+- Removed the unsafe single-panorama fallback for a tour without valid scenes.
+  Such a module now displays a clear configuration message and does not start
+  a Pannellum viewer with unrelated single-panorama data.
+
 ## [5.3.20] - Unreleased
 
 - Fixed mode-aware tab selection for Joomla radio inputs: the checked viewer

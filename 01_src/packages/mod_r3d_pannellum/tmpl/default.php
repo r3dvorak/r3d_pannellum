@@ -12,10 +12,13 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Language\Text;
+
 /** $build is prepared in mod_r3d_pannellum.php via ModR3dPannellumHelper::build($params) */
 $containerId = isset($build['id']) ? (string) $build['id'] : ('pano-' . (int) $module->id);
 $style = isset($build['style']) ? (string) $build['style'] : 'width:100%;height:500px;';
 $config = isset($build['config']) && is_array($build['config']) ? $build['config'] : [];
+$renderViewer = !isset($build['renderViewer']) || $build['renderViewer'] === true;
 
 $json = json_encode(
     $config,
@@ -24,8 +27,16 @@ $json = json_encode(
         | JSON_INVALID_UTF8_SUBSTITUTE | JSON_THROW_ON_ERROR
 );
 ?>
+<?php if (!$renderViewer) : ?>
+<div
+    id="<?php echo htmlspecialchars($containerId, ENT_QUOTES, 'UTF-8'); ?>"
+    style="<?php echo htmlspecialchars($style, ENT_QUOTES, 'UTF-8'); ?>"
+    role="status"
+><?php echo htmlspecialchars(Text::_('MOD_R3D_PAN_TOUR_EMPTY_MESSAGE'), ENT_QUOTES, 'UTF-8'); ?></div>
+<?php else : ?>
 <div
     id="<?php echo htmlspecialchars($containerId, ENT_QUOTES, 'UTF-8'); ?>"
     style="<?php echo htmlspecialchars($style, ENT_QUOTES, 'UTF-8'); ?>"
     data-r3d-pannellum-config="<?php echo htmlspecialchars($json, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8'); ?>"
 ></div>
+<?php endif; ?>

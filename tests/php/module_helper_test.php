@@ -32,6 +32,16 @@ namespace Joomla\Registry {
     }
 }
 
+namespace Joomla\CMS\Language {
+    final class Text
+    {
+        public static function _(string $key): string
+        {
+            return $key;
+        }
+    }
+}
+
 namespace {
     define('_JEXEC', 1);
     set_error_handler(static function (int $severity, string $message, string $file, int $line): bool {
@@ -107,6 +117,11 @@ namespace {
     expect(count($tour['config']['scenes']) === 2, 'Duplicate scene IDs were not rejected.');
     expect($tour['config']['scenes']['scene-a']['hotSpots'][0]['sceneId'] === 'scene-b', 'Valid scene target missing.');
     expect(!isset($tour['config']['scenes']['scene-b']['hotSpots']), 'Invalid scene target was not skipped.');
+    $emptyTour = ModR3dPannellumHelper::build(new Joomla\Registry\Registry([
+        'viewer_mode' => 'tour', 'panorama' => 'images/single-only.jpg', 'scenes' => [],
+    ]));
+    expect($emptyTour['renderViewer'] === false, 'An invalid tour must not initialize the viewer.');
+    expect($emptyTour['config'] === [], 'An invalid tour must not fall back to the single panorama configuration.');
     $malformed = ModR3dPannellumHelper::build(new Joomla\Registry\Registry(['yaw' => '1e999', 'panorama' => 'images/a.jpg']));
     expect(!isset($malformed['config']['yaw']), 'Infinite numeric input was accepted.');
 
@@ -119,6 +134,13 @@ namespace {
     expect(strpos($html, $payload) === false, 'Raw script-termination payload reached HTML.');
     expect(strpos($html, '\\u003C/script\\u003E') !== false, 'JSON_HEX_TAG encoding is missing.');
     expect(strpos($html, 'data-r3d-pannellum-config=') !== false, 'External initializer data is missing.');
+
+    $build = $emptyTour;
+    ob_start();
+    require dirname(__DIR__, 2) . '/01_src/packages/mod_r3d_pannellum/tmpl/default.php';
+    $emptyTourHtml = ob_get_clean();
+    expect(strpos($emptyTourHtml, 'data-r3d-pannellum-config=') === false, 'Invalid tour must not emit a viewer configuration.');
+    expect(strpos($emptyTourHtml, 'MOD_R3D_PAN_TOUR_EMPTY_MESSAGE') !== false, 'Invalid tour configuration message is missing.');
 
     echo "PHP module regression tests: OK\n";
 }

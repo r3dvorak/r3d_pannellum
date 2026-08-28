@@ -19,8 +19,11 @@ class ModR3dPannellumHelper
         $height = self::normalizeDimension($params->get('container_height', '500px'), '500px');
 
         $config = self::buildCommonConfig($params);
+        $renderViewer = true;
         if (self::isTourMode($params)) {
             $config = self::buildTourConfig($params, $config);
+            $renderViewer = $config !== null;
+            $config ??= [];
         } else {
             $config['type'] = 'equirectangular';
             $config['panorama'] = self::normalizePanoramaUrl($params->get('panorama', ''));
@@ -30,7 +33,7 @@ class ModR3dPannellumHelper
             }
         }
 
-        return ['id' => $id, 'style' => 'width:' . $width . ';height:' . $height . ';', 'config' => $config];
+        return ['id' => $id, 'style' => 'width:' . $width . ';height:' . $height . ';', 'config' => $config, 'renderViewer' => $renderViewer];
     }
 
     private static function buildCommonConfig(Registry $params): array
@@ -54,7 +57,7 @@ class ModR3dPannellumHelper
         return $config;
     }
 
-    private static function buildTourConfig(Registry $params, array $defaults): array
+    private static function buildTourConfig(Registry $params, array $defaults): ?array
     {
         $validRows = [];
         $ids = [];
@@ -67,9 +70,7 @@ class ModR3dPannellumHelper
             $validRows[] = [$sceneId, $row, $panorama];
         }
         if ($validRows === []) {
-            $defaults['type'] = 'equirectangular';
-            $defaults['panorama'] = self::normalizePanoramaUrl($params->get('panorama', ''));
-            return $defaults;
+            return null;
         }
         $scenes = [];
         foreach ($validRows as [$sceneId, $row, $panorama]) {
