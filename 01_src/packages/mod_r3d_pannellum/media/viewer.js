@@ -31,13 +31,32 @@
             return;
         }
         var hotspots = viewer.getConfig().hotSpots || [];
+        var changed = false;
         hotspots.forEach(function (hotspot) {
             if (hotspot.cssClass || !hotspot.div) {
                 return;
             }
-            hotspot.div.style.scale = appearance.scale === 1 ? '' : String(appearance.scale);
-            hotspot.div.style.opacity = appearance.opacity === 1 ? '' : String(appearance.opacity);
+            var style = hotspot.div.style;
+            var size = 26 * appearance.scale;
+            var spriteOffset = hotspot.type === 'scene' ? 5 * size : 4 * size;
+            var width = appearance.scale === 1 ? '' : size + 'px';
+            var backgroundSize = appearance.scale === 1 ? '' : size + 'px ' + (8 * size) + 'px';
+            var backgroundPosition = appearance.scale === 1 ? '' : '0 -' + spriteOffset + 'px';
+            if (style.width !== width || style.height !== width || style.backgroundSize !== backgroundSize || style.backgroundPosition !== backgroundPosition || style.opacity !== (appearance.opacity === 1 ? '' : String(appearance.opacity))) {
+                changed = true;
+            }
+            style.width = width;
+            style.height = width;
+            style.backgroundSize = backgroundSize;
+            style.backgroundPosition = backgroundPosition;
+            style.opacity = appearance.opacity === 1 ? '' : String(appearance.opacity);
         });
+        // Pannellum positions from the hotspot element's dimensions. Resizing
+        // the sprite therefore requires one safe renderer pass to keep the
+        // hotspot centre exactly at its yaw / pitch coordinate.
+        if (changed && typeof viewer.resize === 'function') {
+            viewer.resize();
+        }
     }
 
     function bindHotspotAppearance(viewer, appearance) {

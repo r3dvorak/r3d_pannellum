@@ -24,7 +24,9 @@ const element = {
 };
 
 let viewerCalls = 0;
+let viewerResizes = 0;
 const standardHotspot = { div: { style: {} } };
+const sceneHotspot = { type: 'scene', div: { style: {} } };
 const customHotspot = { cssClass: 'my-icon', div: { style: {} } };
 const viewerListeners = {};
 global.window = {
@@ -36,8 +38,9 @@ global.window = {
             }
             viewerCalls += 1;
             return {
-                getConfig() { return { hotSpots: [standardHotspot, customHotspot] }; },
-                on(event, callback) { viewerListeners[event] = callback; }
+                getConfig() { return { hotSpots: [standardHotspot, sceneHotspot, customHotspot] }; },
+                on(event, callback) { viewerListeners[event] = callback; },
+                resize() { viewerResizes += 1; }
             };
         }
     }
@@ -69,10 +72,16 @@ if (viewerCalls !== 1) {
 if (!attributes.has('data-r3d-pannellum-initialized')) {
     throw new Error('Initialization marker was not set.');
 }
-if (standardHotspot.div.style.scale !== '1.5' || standardHotspot.div.style.opacity !== '0.5') {
-    throw new Error('Global standard hotspot appearance was not applied.');
+if (standardHotspot.div.style.width !== '39px' || standardHotspot.div.style.height !== '39px'
+    || standardHotspot.div.style.backgroundSize !== '39px 312px'
+    || standardHotspot.div.style.backgroundPosition !== '0 -156px'
+    || standardHotspot.div.style.opacity !== '0.5' || viewerResizes !== 1) {
+    throw new Error('Global standard hotspot appearance was not applied without a renderer repositioning pass.');
 }
-if (customHotspot.div.style.scale || customHotspot.div.style.opacity) {
+if (sceneHotspot.div.style.backgroundPosition !== '0 -195px') {
+    throw new Error('Scaled Scene hotspot sprite position was not retained.');
+}
+if (customHotspot.div.style.width || customHotspot.div.style.height || customHotspot.div.style.opacity) {
     throw new Error('Custom hotspot CSS styling must not be overridden globally.');
 }
 
