@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension type="module" client="site" method="upgrade">
 	<name>MOD_R3D_PANNELLUM</name>
-	<version>5.3.22</version>
+	<version>5.3.23</version>
 	<creationDate>2026-08-27</creationDate>
 	<author>Richard Dvorak, r3d.de</author>
 	<authorEmail>dev@r3d.de</authorEmail>
@@ -12,6 +12,7 @@
 	<files>
 		<filename module="mod_r3d_pannellum">mod_r3d_pannellum.php</filename>
 		<filename>helper.php</filename>
+		<folder>fields</folder>
 		<folder>tmpl</folder>
 		<folder>language</folder>
 		<folder>forms</folder>

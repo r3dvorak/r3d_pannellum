@@ -27,7 +27,7 @@ foreach ($formPath in $forms) {
     [xml]$xml = Get-Content -LiteralPath $formPath -Raw
     $text = Get-Content -LiteralPath $formPath -Raw
     foreach ($match in [regex]::Matches($text, 'MOD_R3D_PAN_[A-Z0-9_]+')) { $referenced[$match.Value] = $true }
-    foreach ($match in [regex]::Matches($text, '(?:label|description|hint)="([^"]+)"')) {
+    foreach ($match in [regex]::Matches($text, '(?:^|\s)(?:label|description|hint)="([^"]+)"')) {
         $value = $match.Groups[1].Value
         if ($value -notmatch '^(MOD_R3D_PAN_|JGLOBAL_|JOPTION_)') { throw "Hardcoded visible form text '$value' in $formPath" }
     }
@@ -49,11 +49,26 @@ foreach ($key in @('MOD_R3D_PAN_TOUR_EMPTY_MESSAGE')) {
 
 $singleHotspotForm = Get-Content -LiteralPath (Join-Path $root '01_src\packages\mod_r3d_pannellum\forms\hotspot.xml') -Raw
 $sceneHotspotForm = Get-Content -LiteralPath (Join-Path $root '01_src\packages\mod_r3d_pannellum\forms\hotspot-scene.xml') -Raw
+$visualPickerField = Join-Path $root '01_src\packages\mod_r3d_pannellum\fields\visualpicker.php'
 if ($singleHotspotForm -match '<option value="scene">') {
     throw 'Single-panorama hotspots must not offer scene navigation.'
 }
 if ($sceneHotspotForm -notmatch '<option value="scene">') {
     throw 'Scene hotspots must offer scene navigation.'
+}
+foreach ($hotspotForm in @($singleHotspotForm, $sceneHotspotForm)) {
+    if ($hotspotForm -notmatch 'type="visualpicker"' -or $hotspotForm -notmatch 'showlabel="false"') {
+        throw 'Hotspot forms must render the visual picker as an unlabeled custom button field.'
+    }
+}
+if (-not (Test-Path -LiteralPath $visualPickerField)) {
+    throw 'The visual picker button field is missing.'
+}
+$visualPickerSource = Get-Content -LiteralPath $visualPickerField -Raw
+foreach ($required in @('type="button"', 'btn btn-secondary r3d-pan-picker-button', 'MOD_R3D_PAN_PICKER_BUTTON')) {
+    if ($visualPickerSource -notmatch [regex]::Escape($required)) {
+        throw "Visual picker button rendering is missing: $required"
+    }
 }
 
 $moduleForm = $forms[0]

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<form>
+<form addfieldpath="modules/mod_r3d_pannellum/fields">
   <fields name="hotspot">
     <fieldset name="row">
-	  <field name="visualPicker" type="button" label="MOD_R3D_PAN_PICKER_BUTTON" class="btn btn-secondary r3d-pan-picker-button" />
+      <field name="visualPicker" type="visualpicker" showlabel="false" />
       <field name="type" type="list" default="info"
              label="MOD_R3D_PAN_HOTSPOT_TYPE_LABEL"
              description="MOD_R3D_PAN_HOTSPOT_TYPE_DESC">
