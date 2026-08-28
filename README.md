@@ -39,7 +39,19 @@ active, but remains stored for a later switch back to Single Panorama mode.
 If a tour has no valid scene, the module does not fall back to that stored
 single panorama; it displays a configuration message instead.
 
-Each hotspot row includes **Place visually**. It opens a local Pannellum
+The global settings also contain **Reset view after inactivity**. It is off by
+default, so visitor zoom and viewing direction remain unchanged after an
+interaction. Enable it only when a panorama should return to its configured
+starting view after the selected delay and resume auto-rotation.
+
+**Standard hotspot appearance** is also global: **Standard icon scale** uses
+`1` for Pannellum's normal icon size, while **Standard icon opacity** uses `1`
+for fully opaque and `0` for fully transparent icons. These values apply to
+the built-in Pannellum icons in both viewer modes; a hotspot with its own CSS
+class deliberately retains its custom styling.
+
+Each hotspot row starts with **Type**, followed by **Choose position in
+panorama**. The button opens a local Pannellum
 preview of the root panorama in single mode or of the enclosing scene panorama
 in tour mode. Click the preview to place a temporary marker, then select
 **Apply** to write decimal yaw and pitch values to that row. **Cancel** closes
@@ -47,7 +59,8 @@ the preview without changing fields. The control uses delegated events, so it
 also works for repeatable rows added, removed, or reordered in the editor.
 Root hotspots in Single Panorama mode offer only Info and Link. The Scene type
 is available only inside a tour scene, where it can target another valid tour
-scene.
+scene. Text is displayed as the hover tooltip for Info, Link, and Scene
+hotspots.
 
 The administrator integration supports both Joomla's core module editor and
 Regular Labs Advanced Module Manager. After installing an updated package,

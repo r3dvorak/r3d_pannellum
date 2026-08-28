@@ -1,5 +1,16 @@
 # Changelog
 
+## [5.3.26] - Unreleased
+
+- Added global standard hotspot icon scale and opacity settings for built-in
+  Pannellum icons; custom CSS hotspot classes remain untouched.
+- Disabled automatic view reset after interaction by default. It is now an
+  explicit configurable auto-rotation option with a delay.
+- Corrected Scene hotspot hover text and refined the hotspot editor order:
+  type, visual position button, yaw, pitch, then type-specific fields.
+- Replaced the empty-looking visual picker control with a localized Joomla
+  administrator button.
+
 ## [5.3.22] - Unreleased
 
 - Separated root-hotspot and scene-hotspot forms. Single Panorama hotspots now
