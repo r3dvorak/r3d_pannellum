@@ -1,5 +1,11 @@
 # Changelog
 
+## [5.3.29] - Unreleased
+
+- Added a localized SVG Reset view control below Pannellum's zoom controls when
+  automatic inactivity reset is disabled. It restores the current panorama or
+  scene's configured default view and resumes configured auto-rotation.
+
 ## [5.3.28] - Unreleased
 
 - Made view reset after inactivity explicitly require a non-zero auto-rotation

@@ -8,6 +8,7 @@
 defined('_JEXEC') || die;
 
 use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Language\Text;
 use Joomla\Registry\Registry;
 
 class ModR3dPannellumHelper
@@ -51,11 +52,15 @@ class ModR3dPannellumHelper
             $value = self::normalizeNumber($params->get($rule[0], null), $rule[1], $rule[2]);
             if ($value !== null) { $config[$name] = $value; }
         }
+        $config['r3dAutoRotateSpeed'] = $config['autoRotate'] ?? 0;
         // Pannellum's inactivity handler performs both actions atomically:
         // lookAt() restores the configured default view and then resumes the
         // stored auto-rotation speed. Without a non-zero speed there is no
         // rotation to restart, so do not enable a misleading reset timer.
-        if (self::normalizeBoolean($params->get('reset_view_after_inactivity', false)) === true
+        $resetAfterInactivity = self::normalizeBoolean($params->get('reset_view_after_inactivity', false)) === true;
+        $config['r3dManualReset'] = !$resetAfterInactivity;
+        $config['r3dResetLabel'] = Text::_('MOD_R3D_PAN_RESET_VIEW_BUTTON');
+        if ($resetAfterInactivity
             && !empty($config['autoRotate'])) {
             $delay = self::normalizeNumber($params->get('auto_rotate_inactivity', null), 0, 86400000);
             if ($delay !== null) { $config['autoRotateInactivityDelay'] = $delay; }

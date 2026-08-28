@@ -9,6 +9,77 @@
     var assetBase = new URL('.', scriptUrl);
     var localLoadPromise;
 
+    function ensureViewerStyle() {
+        if (document.getElementById('r3d-pannellum-viewer-css')) {
+            return;
+        }
+        var style = document.createElement('link');
+        style.id = 'r3d-pannellum-viewer-css';
+        style.rel = 'stylesheet';
+        style.href = new URL('viewer.css', assetBase).href;
+        document.head.appendChild(style);
+    }
+
+    function manualResetOptions(config) {
+        var source = config.default || config;
+        var options = {
+            enabled: source.r3dManualReset === true,
+            label: String(source.r3dResetLabel || ''),
+            autoRotate: Number(source.r3dAutoRotateSpeed) || 0
+        };
+        delete source.r3dManualReset;
+        delete source.r3dResetLabel;
+        delete source.r3dAutoRotateSpeed;
+        return options;
+    }
+
+    function sceneKey(viewer) {
+        return viewer && typeof viewer.getScene === 'function' ? String(viewer.getScene() || '__single__') : '__single__';
+    }
+
+    function addManualResetControl(viewer, options) {
+        if (!options.enabled || !viewer || typeof viewer.getContainer !== 'function'
+            || typeof viewer.getPitch !== 'function' || typeof viewer.getYaw !== 'function'
+            || typeof viewer.getHfov !== 'function' || typeof viewer.lookAt !== 'function') {
+            return;
+        }
+        var container = viewer.getContainer();
+        var controls = container && container.querySelector('.pnlm-controls-container');
+        if (!controls || controls.querySelector('.r3d-pan-reset-control')) {
+            return;
+        }
+        var views = {};
+        var capture = function () {
+            views[sceneKey(viewer)] = { pitch: viewer.getPitch(), yaw: viewer.getYaw(), hfov: viewer.getHfov() };
+        };
+        var button = document.createElement('button');
+        var icon = document.createElement('img');
+        button.type = 'button';
+        button.className = 'pnlm-controls pnlm-control r3d-pan-reset-control';
+        button.title = options.label;
+        button.setAttribute('aria-label', options.label);
+        icon.src = new URL('reset-view.svg', assetBase).href;
+        icon.alt = '';
+        button.appendChild(icon);
+        button.addEventListener('click', function (event) {
+            event.preventDefault();
+            event.stopPropagation();
+            var view = views[sceneKey(viewer)];
+            if (view) {
+                if (options.autoRotate !== 0 && typeof viewer.startAutoRotate === 'function') {
+                    viewer.startAutoRotate(options.autoRotate, view.pitch);
+                }
+                viewer.lookAt(view.pitch, view.yaw, view.hfov, 750);
+            }
+        });
+        controls.insertBefore(button, controls.querySelector('.pnlm-zoom-controls').nextSibling);
+        capture();
+        if (typeof viewer.on === 'function') {
+            viewer.on('load', capture);
+            viewer.on('scenechange', function () { window.setTimeout(capture, 0); });
+        }
+    }
+
     function hotspotAppearance(config) {
         var source = config.default || config;
         var appearance = {
@@ -88,9 +159,12 @@
         }
 
         var appearance = hotspotAppearance(config);
+        var manualReset = manualResetOptions(config);
         element.setAttribute(initializedAttribute, 'true');
         try {
-            bindHotspotAppearance(window.pannellum.viewer(element.id, config), appearance);
+            var viewer = window.pannellum.viewer(element.id, config);
+            bindHotspotAppearance(viewer, appearance);
+            addManualResetControl(viewer, manualReset);
         } catch (error) {
             element.removeAttribute(initializedAttribute);
             console.error('Pannellum init error:', error);
@@ -134,6 +208,7 @@
     }
 
     function start() {
+        ensureViewerStyle();
         if (window.pannellum && typeof window.pannellum.viewer === 'function') {
             initializeAll();
             return;

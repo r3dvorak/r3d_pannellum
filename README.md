@@ -45,6 +45,11 @@ interaction. Enable it only when a panorama should return to its configured
 starting view after the selected delay and resume auto-rotation. It requires a
 non-zero **Rotate speed**; otherwise there is no rotation to restart.
 
+When automatic reset is disabled, the viewer shows a small **Reset view**
+control below the built-in zoom controls. It restores the initial yaw, pitch,
+and HFOV for the current panorama or tour scene. If a non-zero rotate speed is
+configured, the same action restarts that rotation after restoring the view.
+
 **Standard hotspot appearance** is also global: **Standard icon scale** uses
 `1` for Pannellum's normal icon size, while **Standard icon opacity** uses `1`
 for fully opaque and `0` for fully transparent icons. These values apply to

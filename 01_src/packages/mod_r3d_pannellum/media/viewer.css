@@ -1,0 +1,15 @@
+.r3d-pan-reset-control {
+    display: block;
+    width: 26px;
+    height: 26px;
+    padding: 0;
+    color: #000;
+}
+
+.r3d-pan-reset-control img {
+    display: block;
+    width: 18px;
+    height: 18px;
+    margin: 4px;
+    pointer-events: none;
+}

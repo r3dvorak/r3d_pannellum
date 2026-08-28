@@ -5,7 +5,10 @@ const path = require('path');
 const vm = require('vm');
 
 const attributes = new Map([
-    ['data-r3d-pannellum-config', JSON.stringify({ escapeHTML: true, r3dHotspotIconScale: 1.5, r3dHotspotIconOpacity: 0.5 })]
+    ['data-r3d-pannellum-config', JSON.stringify({
+        escapeHTML: true, r3dHotspotIconScale: 1.5, r3dHotspotIconOpacity: 0.5,
+        r3dManualReset: true, r3dResetLabel: 'Reset view', r3dAutoRotateSpeed: 2
+    })]
 ]);
 const element = {
     id: 'viewer-test',
@@ -29,16 +32,35 @@ const standardHotspot = { div: { style: {} } };
 const sceneHotspot = { type: 'scene', div: { style: {} } };
 const customHotspot = { cssClass: 'my-icon', div: { style: {} } };
 const viewerListeners = {};
+const zoomControl = { nextSibling: null };
+const controls = {
+    children: [],
+    querySelector(selector) {
+        if (selector === '.pnlm-zoom-controls') return zoomControl;
+        if (selector === '.r3d-pan-reset-control') return this.children.find((node) => node.className?.includes('r3d-pan-reset-control')) || null;
+        return null;
+    },
+    insertBefore(node) { this.children.push(node); }
+};
+let resetLookAt = null;
+let resetAutoRotate = null;
 global.window = {
     location: { href: 'https://example.test/' },
     pannellum: {
         viewer(id, config) {
-            if (id !== 'viewer-test' || config.escapeHTML !== true || 'r3dHotspotIconScale' in config || 'r3dHotspotIconOpacity' in config) {
+            if (id !== 'viewer-test' || config.escapeHTML !== true || 'r3dHotspotIconScale' in config || 'r3dHotspotIconOpacity' in config || 'r3dManualReset' in config || 'r3dResetLabel' in config || 'r3dAutoRotateSpeed' in config) {
                 throw new Error('Unexpected viewer arguments.');
             }
             viewerCalls += 1;
             return {
                 getConfig() { return { hotSpots: [standardHotspot, sceneHotspot, customHotspot] }; },
+                getContainer() { return { querySelector(selector) { return selector === '.pnlm-controls-container' ? controls : null; } }; },
+                getScene() { return null; },
+                getPitch() { return 10; },
+                getYaw() { return 20; },
+                getHfov() { return 90; },
+                lookAt(...args) { resetLookAt = args; },
+                startAutoRotate(...args) { resetAutoRotate = args; },
                 on(event, callback) { viewerListeners[event] = callback; },
                 resize() { viewerResizes += 1; }
             };
@@ -56,8 +78,17 @@ global.document = {
     getElementById() {
         return null;
     },
-    createElement() {
-        return { addEventListener() {} };
+    createElement(tagName) {
+        const listeners = {};
+        return {
+            tagName,
+            style: {},
+            children: [],
+            addEventListener(event, callback) { listeners[event] = callback; },
+            appendChild(child) { this.children.push(child); },
+            setAttribute() {},
+            trigger(event) { listeners[event]?.({ preventDefault() {}, stopPropagation() {} }); }
+        };
     }
 };
 
@@ -83,6 +114,14 @@ if (sceneHotspot.div.style.backgroundPosition !== '0 -195px') {
 }
 if (customHotspot.div.style.width || customHotspot.div.style.height || customHotspot.div.style.opacity) {
     throw new Error('Custom hotspot CSS styling must not be overridden globally.');
+}
+const resetButton = controls.children[0];
+if (!resetButton || !resetButton.className.includes('r3d-pan-reset-control') || resetButton.title !== 'Reset view' || resetButton.children[0].src !== 'https://example.test/media/mod_r3d_pannellum/reset-view.svg') {
+    throw new Error('Manual reset control was not rendered with its localized SVG icon.');
+}
+resetButton.trigger('click');
+if (JSON.stringify(resetLookAt) !== JSON.stringify([10, 20, 90, 750]) || JSON.stringify(resetAutoRotate) !== JSON.stringify([2, 10])) {
+    throw new Error('Manual reset did not restore the current scene default view and restart auto-rotation.');
 }
 
 console.log('JavaScript viewer regression tests: OK');
