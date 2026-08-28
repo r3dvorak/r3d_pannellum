@@ -5,7 +5,7 @@ const path = require('path');
 const vm = require('vm');
 
 const attributes = new Map([
-    ['data-r3d-pannellum-config', JSON.stringify({ escapeHTML: true })]
+    ['data-r3d-pannellum-config', JSON.stringify({ escapeHTML: true, r3dHotspotIconScale: 1.5, r3dHotspotIconOpacity: 0.5 })]
 ]);
 const element = {
     id: 'viewer-test',
@@ -24,14 +24,21 @@ const element = {
 };
 
 let viewerCalls = 0;
+const standardHotspot = { div: { style: {} } };
+const customHotspot = { cssClass: 'my-icon', div: { style: {} } };
+const viewerListeners = {};
 global.window = {
     location: { href: 'https://example.test/' },
     pannellum: {
         viewer(id, config) {
-            if (id !== 'viewer-test' || config.escapeHTML !== true) {
+            if (id !== 'viewer-test' || config.escapeHTML !== true || 'r3dHotspotIconScale' in config || 'r3dHotspotIconOpacity' in config) {
                 throw new Error('Unexpected viewer arguments.');
             }
             viewerCalls += 1;
+            return {
+                getConfig() { return { hotSpots: [standardHotspot, customHotspot] }; },
+                on(event, callback) { viewerListeners[event] = callback; }
+            };
         }
     }
 };
@@ -61,6 +68,12 @@ if (viewerCalls !== 1) {
 }
 if (!attributes.has('data-r3d-pannellum-initialized')) {
     throw new Error('Initialization marker was not set.');
+}
+if (standardHotspot.div.style.scale !== '1.5' || standardHotspot.div.style.opacity !== '0.5') {
+    throw new Error('Global standard hotspot appearance was not applied.');
+}
+if (customHotspot.div.style.scale || customHotspot.div.style.opacity) {
+    throw new Error('Custom hotspot CSS styling must not be overridden globally.');
 }
 
 console.log('JavaScript viewer regression tests: OK');

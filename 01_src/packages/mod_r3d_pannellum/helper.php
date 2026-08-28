@@ -42,13 +42,18 @@ class ModR3dPannellumHelper
         $numbers = [
             'yaw' => ['yaw', -180, 180], 'pitch' => ['pitch', -90, 90], 'hfov' => ['hfov', 1, 180],
             'minHfov' => ['min_hfov', 1, 180], 'maxHfov' => ['max_hfov', 1, 180],
-            'autoRotate' => ['auto_rotate', -360, 360], 'autoRotateInactivityDelay' => ['auto_rotate_inactivity', 0, 86400000],
+            'autoRotate' => ['auto_rotate', -360, 360],
             'autoRotateStopDelay' => ['auto_rotate_stop', 0, 86400000], 'northOffset' => ['north_offset', -360, 360],
-            'sceneFadeDuration' => ['scene_fade_duration', 0, 60000],
+            'sceneFadeDuration' => ['scene_fade_duration', 0, 60000], 'r3dHotspotIconScale' => ['hotspot_icon_scale', 0.25, 4],
+            'r3dHotspotIconOpacity' => ['hotspot_icon_opacity', 0, 1],
         ];
         foreach ($numbers as $name => $rule) {
             $value = self::normalizeNumber($params->get($rule[0], null), $rule[1], $rule[2]);
             if ($value !== null) { $config[$name] = $value; }
+        }
+        if (self::normalizeBoolean($params->get('reset_view_after_inactivity', false)) === true) {
+            $delay = self::normalizeNumber($params->get('auto_rotate_inactivity', null), 0, 86400000);
+            if ($delay !== null) { $config['autoRotateInactivityDelay'] = $delay; }
         }
         foreach (['showZoomCtrl' => 'show_zoom_ctrl', 'showFullscreenCtrl' => 'show_fullscreen_ctrl', 'doubleClickZoom' => 'double_click_zoom', 'mouseZoom' => 'mouse_zoom', 'draggable' => 'draggable', 'disableKeyboardCtrl' => 'disable_keyboard_ctrl', 'compass' => 'compass'] as $name => $param) {
             $value = self::normalizeBoolean($params->get($param, null));

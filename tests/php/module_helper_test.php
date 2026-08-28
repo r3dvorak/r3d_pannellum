@@ -118,6 +118,16 @@ namespace {
     expect($tour['config']['scenes']['scene-a']['hotSpots'][0]['sceneId'] === 'scene-b', 'Valid scene target missing.');
     expect($tour['config']['scenes']['scene-a']['hotSpots'][0]['text'] === 'Go to scene B', 'Scene hotspot tooltip text was not retained.');
     expect(!isset($tour['config']['scenes']['scene-b']['hotSpots']), 'Invalid scene target was not skipped.');
+    $preserveView = ModR3dPannellumHelper::build(new Joomla\Registry\Registry([
+        'panorama' => 'images/a.jpg', 'auto_rotate' => 2, 'auto_rotate_inactivity' => 0,
+        'hotspot_icon_scale' => 1.5, 'hotspot_icon_opacity' => 0.5,
+    ]));
+    expect(!isset($preserveView['config']['autoRotateInactivityDelay']), 'View reset must be disabled unless explicitly enabled.');
+    expect($preserveView['config']['r3dHotspotIconScale'] === 1.5 && $preserveView['config']['r3dHotspotIconOpacity'] === 0.5, 'Global standard hotspot appearance settings were not retained.');
+    $resetView = ModR3dPannellumHelper::build(new Joomla\Registry\Registry([
+        'panorama' => 'images/a.jpg', 'reset_view_after_inactivity' => '1', 'auto_rotate_inactivity' => 5000,
+    ]));
+    expect($resetView['config']['autoRotateInactivityDelay'] === 5000.0, 'Explicit view reset delay was not retained.');
     $emptyTour = ModR3dPannellumHelper::build(new Joomla\Registry\Registry([
         'viewer_mode' => 'tour', 'panorama' => 'images/single-only.jpg', 'scenes' => [],
     ]));

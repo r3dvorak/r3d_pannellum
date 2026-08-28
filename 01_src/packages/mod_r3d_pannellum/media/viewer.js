@@ -9,6 +9,48 @@
     var assetBase = new URL('.', scriptUrl);
     var localLoadPromise;
 
+    function hotspotAppearance(config) {
+        var source = config.default || config;
+        var appearance = {
+            scale: Number(source.r3dHotspotIconScale),
+            opacity: Number(source.r3dHotspotIconOpacity)
+        };
+        if (!isFinite(appearance.scale) || appearance.scale < 0.25 || appearance.scale > 4) {
+            appearance.scale = 1;
+        }
+        if (!isFinite(appearance.opacity) || appearance.opacity < 0 || appearance.opacity > 1) {
+            appearance.opacity = 1;
+        }
+        delete source.r3dHotspotIconScale;
+        delete source.r3dHotspotIconOpacity;
+        return appearance;
+    }
+
+    function applyHotspotAppearance(viewer, appearance) {
+        if (!viewer || typeof viewer.getConfig !== 'function') {
+            return;
+        }
+        var hotspots = viewer.getConfig().hotSpots || [];
+        hotspots.forEach(function (hotspot) {
+            if (hotspot.cssClass || !hotspot.div) {
+                return;
+            }
+            hotspot.div.style.scale = appearance.scale === 1 ? '' : String(appearance.scale);
+            hotspot.div.style.opacity = appearance.opacity === 1 ? '' : String(appearance.opacity);
+        });
+    }
+
+    function bindHotspotAppearance(viewer, appearance) {
+        function apply() {
+            applyHotspotAppearance(viewer, appearance);
+        }
+        apply();
+        if (viewer && typeof viewer.on === 'function') {
+            viewer.on('load', apply);
+            viewer.on('scenechange', function () { window.setTimeout(apply, 0); });
+        }
+    }
+
     function initializeElement(element) {
         if (element.hasAttribute(initializedAttribute)) {
             return;
@@ -26,9 +68,10 @@
             return;
         }
 
+        var appearance = hotspotAppearance(config);
         element.setAttribute(initializedAttribute, 'true');
         try {
-            window.pannellum.viewer(element.id, config);
+            bindHotspotAppearance(window.pannellum.viewer(element.id, config), appearance);
         } catch (error) {
             element.removeAttribute(initializedAttribute);
             console.error('Pannellum init error:', error);
