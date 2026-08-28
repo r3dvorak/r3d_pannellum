@@ -1,5 +1,45 @@
 # Changelog
 
+## [5.3.19] - Unreleased
+
+- Expanded the administrator workflow documentation for single panoramas and
+  multi-scene tours, including global-default inheritance and scene overrides.
+- Documented the visual picker behaviour for root hotspots and scene hotspots.
+
+## [5.3.18] - 2026-08-28
+
+- Fixed Joomla 6 tab handling by using the `joomla-tab` component's actual
+  tab structure instead of relying on its generated button markup.
+- Hide single-panorama hotspots in tour mode and reveal the Multi-Scene Tour
+  tab reliably in Joomla Core and Advanced Module Manager editors.
+- Fixed picker panorama resolution so a root hotspot always previews the
+  configured single panorama, never a tour scene.
+
+## [5.3.17] - 2026-08-28
+
+- Load administrator picker and mode-aware editor assets in Advanced Module
+  Manager (`com_advancedmodules`) as well as Joomla's core module editor.
+
+## [5.3.16] - 2026-08-28
+
+- Clarified global viewer settings and their inheritance by tour scenes.
+- Kept single panorama image and root hotspots specific to Single Panorama
+  mode while preserving all stored values across mode changes.
+
+## [5.3.15] - 2026-08-28
+
+- Reworked mode-specific editor guidance and localized package description.
+
+## [5.3.14] - 2026-08-28
+
+- Moved tour fields out of Joomla's reserved `advanced` fieldset so the
+  Multi-Scene Tour tab contains the intended tour configuration.
+
+## [5.3.13] - 2026-08-28
+
+- Fixed visual picker modal sizing so its Apply and Cancel controls remain
+  reachable on smaller administrator viewports.
+
 ## [5.3.0] - Unreleased
 
 Feature release: added backward-compatible multi-scene panorama tours with

@@ -32,12 +32,21 @@ hotspot tab are hidden. **Multi-Scene Tour** contains the first scene,
 repeatable tour scenes, and each scene's hotspots. Switching modes preserves
 the inactive mode's stored values.
 
+The first rendered panorama in a tour is the configured **First tour scene**;
+when that value is empty or invalid, the first valid scene in the list is used.
+The global single-panorama image is deliberately ignored while tour mode is
+active, but remains stored for a later switch back to Single Panorama mode.
+
 Each hotspot row includes **Place visually**. It opens a local Pannellum
 preview of the root panorama in single mode or of the enclosing scene panorama
 in tour mode. Click the preview to place a temporary marker, then select
 **Apply** to write decimal yaw and pitch values to that row. **Cancel** closes
 the preview without changing fields. The control uses delegated events, so it
 also works for repeatable rows added, removed, or reordered in the editor.
+
+The administrator integration supports both Joomla's core module editor and
+Regular Labs Advanced Module Manager. After installing an updated package,
+reload an open module edit page so its current administrator assets are used.
 
 ## Compatibility
 
