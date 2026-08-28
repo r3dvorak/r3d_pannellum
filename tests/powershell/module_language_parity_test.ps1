@@ -60,6 +60,9 @@ foreach ($hotspotForm in @($singleHotspotForm, $sceneHotspotForm)) {
     if ($hotspotForm -notmatch 'type="visualpicker"' -or $hotspotForm -notmatch 'showlabel="false"') {
         throw 'Hotspot forms must render the visual picker as an unlabeled custom button field.'
     }
+    if ($hotspotForm.IndexOf('name="type"') -gt $hotspotForm.IndexOf('name="visualPicker"')) {
+        throw 'The hotspot type selector must be shown before the visual picker button.'
+    }
 }
 if (-not (Test-Path -LiteralPath $visualPickerField)) {
     throw 'The visual picker button field is missing.'

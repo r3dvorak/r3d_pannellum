@@ -2,13 +2,14 @@
 <form addfieldpath="modules/mod_r3d_pannellum/fields">
   <fields name="hotspot">
     <fieldset name="row">
-      <field name="visualPicker" type="visualpicker" showlabel="false" />
       <field name="type" type="list" default="info"
              label="MOD_R3D_PAN_HOTSPOT_TYPE_LABEL"
              description="MOD_R3D_PAN_HOTSPOT_TYPE_DESC">
         <option value="info">MOD_R3D_PAN_HOTSPOT_TYPE_INFO</option>
         <option value="link">MOD_R3D_PAN_HOTSPOT_TYPE_LINK</option>
       </field>
+
+      <field name="visualPicker" type="visualpicker" showlabel="false" />
 
       <field name="yaw" type="number" filter="float"
              label="MOD_R3D_PAN_HOTSPOT_YAW_LABEL"
