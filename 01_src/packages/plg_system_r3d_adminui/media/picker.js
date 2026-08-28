@@ -22,13 +22,16 @@
     }
 
     function panoramaFor(row) {
-        var scope = row;
-        while (scope) {
-            var scenePanorama = scope.querySelector('[name*="[scene][panorama]"]');
-            if (scenePanorama) {
-                return scenePanorama;
+        var hotspotYaw = hotspotInput(row, 'yaw');
+        var hotspotName = hotspotYaw && hotspotYaw.name;
+        if (hotspotName && hotspotName.indexOf('[scenes]') !== -1) {
+            var scenePrefix = hotspotName.split('[hotspots]')[0];
+            var scenePanoramas = document.querySelectorAll('[name*="[scene][panorama]"]');
+            for (var index = 0; index < scenePanoramas.length; index += 1) {
+                if (scenePanoramas[index].name === scenePrefix + '[panorama]') {
+                    return scenePanoramas[index];
+                }
             }
-            scope = scope.parentElement;
         }
         return document.querySelector('[name="jform[params][panorama]"]');
     }

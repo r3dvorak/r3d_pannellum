@@ -70,7 +70,7 @@ const adminSource = fs.readFileSync(adminPath, 'utf8');
 if (/attributes\s*:\s*true/.test(adminSource)) {
     throw new Error('Admin MutationObserver still watches its own style mutations.');
 }
-for (const required of ['function getViewerModeSelect', 'function toggleModeTabs', 'function renameGlobalTab', "select.value === 'tour'", 'singleHotspots', 'var tour', 'mod_r3d_pannellum.adminui', 'labels.globalTab']) {
+for (const required of ['function getViewerModeSelect', 'function toggleModeTabs', 'function renameGlobalTab', 'function setControlVisible', 'Array.isArray(tab.tabs)', 'item.tabButton', 'tabRetry < 10', "select.value === 'tour'", 'singleHotspots', 'var tour', 'mod_r3d_pannellum.adminui', 'labels.globalTab']) {
     if (!adminSource.includes(required)) throw new Error(`Mode-aware tab visibility is missing ${required}.`);
 }
 if (adminSource.includes('jform[params][setup_level]')) {
@@ -79,7 +79,7 @@ if (adminSource.includes('jform[params][setup_level]')) {
 
 const pickerPath = path.join(__dirname, '..', '..', '01_src', 'packages', 'plg_system_r3d_adminui', 'media', 'picker.js');
 const pickerSource = fs.readFileSync(pickerPath, 'utf8');
-for (const required of ['function safeUrl', 'function panoramaFor', 'mouseEventToCoords', "['input','change']", "[name=\"jform[params][panorama]\"]"]) {
+for (const required of ['function safeUrl', 'function panoramaFor', 'hotspotName.indexOf(\'[scenes]\')', 'scenePrefix + \'[panorama]\'', 'mouseEventToCoords', "['input','change']", "[name=\"jform[params][panorama]\"]"]) {
     if (!pickerSource.includes(required)) throw new Error(`Picker implementation missing ${required}.`);
 }
 if (/innerHTML/.test(pickerSource) || /javascript:\/i/.test(pickerSource.replace('/^javascript:/i', ''))) {
@@ -90,7 +90,7 @@ console.log('JavaScript picker regression checks: OK');
 // Picker helpers are deliberately exposed only for repository-local regression checks.
 const pickerContext = {
     window: { location: { origin: 'https://site.test' }, Joomla: { getOptions() { return {}; } } },
-    document: { addEventListener() {}, querySelector() { return { value: 'global.jpg' }; }, createElement() { return {}; }, body: { appendChild() {} } },
+    document: { addEventListener() {}, querySelector() { return { value: 'global.jpg' }; }, querySelectorAll() { return []; }, createElement() { return {}; }, body: { appendChild() {} } },
     URL,
     Event
 };
@@ -101,14 +101,18 @@ for (const unsafeUrl of ['javascript:alert(1)', 'data:text/html,unsafe', '//evil
     if (picker.safeUrl(unsafeUrl) !== null) throw new Error(`Unsafe picker URL accepted: ${unsafeUrl}`);
 }
 if (picker.safeUrl('images/panorama.jpg') !== 'https://site.test/images/panorama.jpg') throw new Error('Relative picker URL was not resolved.');
-const sceneB = { value: 'scene-b.jpg' };
-const sceneRow = { querySelector() { return sceneB; }, parentElement: null };
+const sceneB = { name: 'jform[params][scenes][0][scene][panorama]', value: 'scene-b.jpg' };
+const sceneYaw = { name: 'jform[params][scenes][0][scene][hotspots][0][hotspot][yaw]' };
+pickerContext.document.querySelectorAll = () => [sceneB];
+const sceneRow = { querySelector(selector) { return selector.includes('[hotspot][yaw]') ? sceneYaw : null; }, parentElement: null };
 if (picker.panoramaFor(sceneRow) !== sceneB) throw new Error('Scene-b panorama was not resolved.');
-const rootRow = { querySelector() { return null; }, parentElement: null };
+const rootYaw = { name: 'jform[params][hotspots][0][hotspot][yaw]' };
+const rootRow = { querySelector(selector) { return selector.includes('[hotspot][yaw]') ? rootYaw : null; }, parentElement: null };
 if (picker.panoramaFor(rootRow).value !== 'global.jpg') throw new Error('Root panorama was not resolved.');
-const dynamicScenePanorama = { value: 'dynamic-scene.jpg' };
-const dynamicSceneRow = { querySelector() { return dynamicScenePanorama; }, parentElement: null };
-const dynamicHotspotRow = { querySelector() { return null; }, parentElement: dynamicSceneRow };
+const dynamicScenePanorama = { name: 'jform[params][scenes][new][scene][panorama]', value: 'dynamic-scene.jpg' };
+const dynamicSceneYaw = { name: 'jform[params][scenes][new][scene][hotspots][new][hotspot][yaw]' };
+pickerContext.document.querySelectorAll = () => [sceneB, dynamicScenePanorama];
+const dynamicHotspotRow = { querySelector(selector) { return selector.includes('[hotspot][yaw]') ? dynamicSceneYaw : null; }, parentElement: null };
 if (picker.panoramaFor(dynamicHotspotRow) !== dynamicScenePanorama) throw new Error('Dynamic scene row was not resolved.');
 
 const events = [];

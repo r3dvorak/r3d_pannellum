@@ -1,6 +1,8 @@
 (function () {
     'use strict';
 
+    var tabRetry = 0;
+
     function all(selector, root) {
         return Array.prototype.slice.call((root || document).querySelectorAll(selector));
     }
@@ -15,6 +17,16 @@
 
     function getTopTabButtons() {
         var tab = getMainTab();
+        if (tab && Array.isArray(tab.tabs) && tab.tabs.length) {
+            return tab.tabs.map(function (item) {
+                return {
+                    element: item.tabButton,
+                    accordionButton: item.accordionButton,
+                    targetId: (item.tab.id || '').toLowerCase(),
+                    pane: item.tab
+                };
+            });
+        }
         var tablist = tab ? tab.querySelector('[role="tablist"]') : null;
         if (!tablist) {
             return [];
@@ -24,6 +36,7 @@
             var targetId = element.getAttribute('aria-controls') || '';
             return {
                 element: element,
+                accordionButton: null,
                 targetId: targetId.toLowerCase(),
                 pane: targetId ? document.getElementById(targetId) : null
             };
@@ -39,14 +52,14 @@
 
     function firstVisible(controls) {
         return controls.find(function (control) {
-            return control.element.style.display !== 'none';
+            return !control.element.hidden && control.element.style.display !== 'none';
         }) || null;
     }
 
     function renameGlobalTab(controls) {
         var labels = (window.Joomla && Joomla.getOptions('mod_r3d_pannellum.adminui')) || {};
         var global = controls.find(function (control) {
-            return /(^|-)basic$/.test(control.targetId);
+            return /(^|-)(general|basic)$/.test(control.targetId);
         });
         if (global && labels.globalTab && global.element.textContent !== labels.globalTab) {
             global.element.textContent = labels.globalTab;
@@ -59,12 +72,35 @@
         }
     }
 
+    function setControlVisible(control, visible) {
+        setDisplay(control.element, visible ? '' : 'none');
+        setDisplay(control.pane, visible ? '' : 'none');
+        setDisplay(control.accordionButton, visible ? '' : 'none');
+        if (control.element) {
+            control.element.hidden = !visible;
+        }
+        if (control.pane) {
+            control.pane.hidden = !visible;
+        }
+        if (control.accordionButton) {
+            control.accordionButton.hidden = !visible;
+        }
+    }
+
     function toggleModeTabs() {
         var select = getViewerModeSelect();
         var controls = getTopTabButtons();
-        if (!select || !controls.length) {
+        if (!select) {
             return;
         }
+        if (!controls.length) {
+            if (tabRetry < 10 && window.requestAnimationFrame) {
+                tabRetry += 1;
+                window.requestAnimationFrame(toggleModeTabs);
+            }
+            return;
+        }
+        tabRetry = 0;
 
         renameGlobalTab(controls);
 
@@ -72,10 +108,8 @@
             var singleHotspots = /(^|-)intermediate$/.test(control.targetId);
             var tour = /(^|-)tour$/.test(control.targetId);
             var hide = select.value === 'tour' ? singleHotspots : tour;
-            var display = hide ? 'none' : '';
 
-            setDisplay(control.element, display);
-            setDisplay(control.pane, display);
+            setControlVisible(control, !hide);
 
             if (hide && isActive(control)) {
                 var next = firstVisible(controls);
